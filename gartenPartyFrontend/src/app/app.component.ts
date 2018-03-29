@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,15 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'app';
+  public HomeNav = '/';
+
+  constructor(router: Router) {
+    router.events.subscribe((url: any) => {
+      let navPart = url.url;
+      if (navPart !== undefined && navPart.indexOf('?') > 0) {
+        navPart = navPart.substring(0, navPart.indexOf('?'));
+      }
+      return this.HomeNav = navPart;
+    });
+  }
 }

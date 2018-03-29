@@ -1,0 +1,35 @@
+  @import '_vars';
+
+.nav {
+  list-style-type: none;
+  margin-top: -10px;
+  margin-left: -10px;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333 !important;
+
+}
+
+.nav li {
+  float: left;
+}
+
+.nav li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.nav li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.nav .active {
+  background-color: $evia-color;
+}
+
+body{
+  background: #0a1a24;
+}

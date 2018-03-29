@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+  background: #0a1a24;
+}
+
+:root {
+  // --opacity: 1;
+  --color: #faa700;
+  --color-light: #f5ede1;
+  // --color-rgba: rgba(250, 167, 0, var(--opacity));
+  --dark: #a7a7a7;
+  --dark: #8a8a8a;
+  --darker: #303030;
+  --sans-serif: 'Roboto', sans-serif;
+}
