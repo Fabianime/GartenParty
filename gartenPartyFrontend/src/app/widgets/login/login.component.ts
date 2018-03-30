@@ -9,9 +9,7 @@ import {LoginService} from '../../services/login.service';
 
 export class LoginComponent {
 
-  public gartenPartyId = '';
-
-  private _gartenPartyId;
+  private gartenPartyId;
   private _bLogin;
 
   @Output() bLoginChange = new EventEmitter();
@@ -29,35 +27,32 @@ export class LoginComponent {
   constructor(private loginService: LoginService) {
   }
 
-  public checkLogin() {
-    this._gartenPartyId = this.getGartenPartyID();
-    this.loginService.checkLogin(this._gartenPartyId).subscribe((data) => {
+  private checkLogin (){
+    this.loginService.checkGartenPartyID().subscribe((data) => {
       if (data.status === 200) {
-        return data.response;
+         this.bLogin = data.response;
       } else {
-        throw data.error;
+        throw data.error
+        // toDO: return False + logs mit fehler schreiben
       }
     });
   }
 
-  private getGartenPartyID() {
-    const strCookies = document.cookie.split(';');
-    const name = 'gartenPartyID';
-
-    for (let i = 0; i < strCookies.length; i++) {
-      let cookie = strCookies[i];
-      while (cookie.charAt(0) === ' ') {
-        cookie = cookie.substring(1);
-      }
-      if (cookie.indexOf(name) === 0) {
-        return cookie.substring(name.length, cookie.length);
-      }
-    }
+  private setGartenPartyID() {
+    this.createCookie('gartenPartyID',this.gartenPartyId,1);
+    this.checkLogin();
   }
 
-  public setGartenPartyID() {
-    document.cookie = 'gartenPartyID=' + this.gartenPartyId;
-    console.log(document.cookie);
+  private createCookie(name,value,days) {
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 *1000));
+        var expires = "; expires=" + date.toUTCString();
+    }
+    else {
+        var expires = "";
+    }
+    document.cookie = name + "=" + value + expires + "; path=/";
   }
 
 }

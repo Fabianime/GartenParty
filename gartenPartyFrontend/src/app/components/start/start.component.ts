@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MusicService} from '../../services/music.service';
+import { LoginService } from '../../services/login.service';
 
 
 @Component({
@@ -9,14 +10,24 @@ import {MusicService} from '../../services/music.service';
 })
 export class StartComponent implements OnInit {
 
-  constructor(private musicService: MusicService) {
-  }
+  constructor(
+    private musicService: MusicService, 
+    private loginService: LoginService
+  ) {}
 
   public aPlaylist = [];
   public bError = false;
 
+  public bLogin = false;
+
+  color = 'primary';
+  mode = 'determinate';
+  value = 50;
+  bufferValue = 75;
+
   ngOnInit() {
     this.getPlayList();
+    this.checkLogin();
   }
 
   private getPlayList() {
@@ -33,5 +44,16 @@ export class StartComponent implements OnInit {
 
   public addEntryRedirect() {
     document.location.href = '/addEntry';
+  }
+
+  private checkLogin (){
+    this.loginService.checkGartenPartyID().subscribe((data) => {
+      if (data.status === 200) {
+         this.bLogin = data.response;
+      } else {
+        throw data.error
+        // toDO: return False + logs mit fehler schreiben
+      }
+    });
   }
 }

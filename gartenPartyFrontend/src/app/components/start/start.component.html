@@ -1,5 +1,6 @@
 <div class="background"></div>
-<section>
+<app-login [(bLogin)]="bLogin" *ngIf="!bLogin"></app-login>
+<section *ngIf="bLogin">
   <div class="album-info">
     <div class="album-art"><img src="https://target.scene7.com/is/image/Target/51223401?wid=520&amp;hei=520&amp;fmt=pjpeg">
       <div class="actions">
@@ -13,6 +14,7 @@
     </div>
   </div>
   <div class="speakers"></div>
+  <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
   <div class="album-tracks">
     <ol>
       <li *ngFor="let title of aPlaylist">

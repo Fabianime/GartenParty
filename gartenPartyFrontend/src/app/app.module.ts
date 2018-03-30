@@ -1,6 +1,7 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {AppMaterialModule} from './modules/app-material.module';
 
 import {AppRoutingModule} from './app-routing.module';
 
@@ -24,8 +25,8 @@ import {LoginService} from './services/login.service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
-
+    FormsModule,
+    AppMaterialModule
   ],
   providers: [MusicService, LoginService],
   bootstrap: [AppComponent]

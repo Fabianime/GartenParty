@@ -1,6 +1,5 @@
 <div class="background"></div>
-<h1>{{test}}</h1>
-<app-login ></app-login>
+<app-login [(bLogin)]="bLogin" *ngIf="!bLogin"></app-login>
 <section *ngIf="bLogin">
   <div class="album-info">
     <div class="album-details">

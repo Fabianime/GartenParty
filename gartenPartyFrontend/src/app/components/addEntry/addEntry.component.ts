@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {LoginService} from '../../services/login.service';
 
 
 @Component({
@@ -7,19 +8,24 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./addEntry.component.scss']
 })
 export class AddEntryComponent implements OnInit {
-
-  constructor() {
+  public bLogin;
+  constructor(private loginService: LoginService) {
   }
 
   public test = document.cookie;
-  public bLogin = false;
 
   ngOnInit() {
     this.checkLogin();
   }
 
-  private checkLogin() {
-    this.test += document.cookie;
-    console.log(this.test);
+  private checkLogin (){
+    this.loginService.checkGartenPartyID().subscribe((data) => {
+      if (data.status === 200) {
+         this.bLogin = data.response;
+      } else {
+        throw data.error
+        // toDO: return False + logs mit fehler schreiben
+      }
+    });
   }
 }

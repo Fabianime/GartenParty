@@ -10,7 +10,20 @@ export class LoginService {
 
   private _endpointUrl = 'http://localhost:8888';
 
-  public checkLogin(gartenPartyID: string): Observable<any> {
-    return this.http.get(this._endpointUrl + '/checkPartys/' + gartenPartyID);
+  public checkGartenPartyID(): Observable<any> {
+    return this.http.get(this._endpointUrl + '/checkPartys/' + this.getGartenPartyID());
+  }
+
+  private getGartenPartyID() {
+    const strCookies = document.cookie.split(';');
+    const cookieName = 'gartenPartyID';
+    let returnValue = '';
+    for (let i = 0; i < strCookies.length; i++) {
+      let cookie = strCookies[i];
+      if(cookie.indexOf(cookieName) >= 0){
+        returnValue = cookie.substring(cookieName.length + 1, cookie.length);
+      }
+    }
+    return returnValue;
   }
 }
