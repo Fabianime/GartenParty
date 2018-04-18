@@ -27,32 +27,31 @@ export class LoginComponent {
   constructor(private loginService: LoginService) {
   }
 
-  private checkLogin (){
+  private checkLogin() {
     this.loginService.checkGartenPartyID().subscribe((data) => {
       if (data.status === 200) {
-         this.bLogin = data.response;
+        this.bLogin = data.response;
       } else {
-        throw data.error
+        throw data.error;
         // toDO: return False + logs mit fehler schreiben
       }
     });
   }
 
   private setGartenPartyID() {
-    this.createCookie('gartenPartyID',this.gartenPartyId,1);
+    this.createCookie('gartenPartyID', this.gartenPartyId, 1);
     this.checkLogin();
   }
 
-  private createCookie(name,value,days) {
+  private createCookie(name, value, days) {
+    let expires = '';
+
     if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 *1000));
-        var expires = "; expires=" + date.toUTCString();
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      expires = '; expires=' + date.toUTCString();
     }
-    else {
-        var expires = "";
-    }
-    document.cookie = name + "=" + value + expires + "; path=/";
+    document.cookie = name + '=' + value + expires + '; path=/';
   }
 
 }
