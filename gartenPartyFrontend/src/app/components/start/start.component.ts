@@ -1,9 +1,15 @@
+<<<<<<< HEAD
 import { Component, OnInit, EventEmitter, AfterViewInit } from '@angular/core';
 import { MusicService } from '../../services/music.service';
 import { LoginService } from '../../services/login.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/interval'; 
 import 'rxjs/add/operator/takeWhile';
+=======
+import {Component, OnInit} from '@angular/core';
+import {MusicService} from '../../services/music.service';
+import {LoginService} from '../../services/login.service';
+>>>>>>> c7bb9d5539a89f4419079d817624af7129b87d88
 
 
 @Component({
@@ -14,10 +20,9 @@ import 'rxjs/add/operator/takeWhile';
 export class StartComponent implements OnInit
  {
 
-  constructor(
-    private musicService: MusicService, 
-    private loginService: LoginService
-  ) {}
+  constructor(private musicService: MusicService,
+              private loginService: LoginService) {
+  }
 
   ngOnInit() {
     this.checkLogin();
@@ -169,6 +174,7 @@ export class StartComponent implements OnInit
     document.location.href = '/addEntry';
   }
 
+<<<<<<< HEAD
   private setTrackLength (trackLength){
     this.trackLength = trackLength;
     const trackLengthSplited = this.trackLength.split(':');
@@ -176,11 +182,14 @@ export class StartComponent implements OnInit
   }
 
   private checkLogin (){
+=======
+  private checkLogin() {
+>>>>>>> c7bb9d5539a89f4419079d817624af7129b87d88
     this.loginService.checkGartenPartyID().subscribe((data) => {
       if (data.status === 200) {
-         this.bLogin = data.response;
+        this.bLogin = data.response;
       } else {
-        throw data.error
+        throw data.error;
         // toDO: return False + logs mit fehler schreiben
       }
     });

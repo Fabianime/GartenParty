@@ -13,6 +13,8 @@ import {AddEntryComponent} from './components/addEntry/addEntry.component';
 import {LoginComponent} from './widgets/login/login.component';
 import {ProgressBarComponent} from './widgets/progress-bar/progress-bar.component';
 import {LoginService} from './services/login.service';
+import {PopupComponent} from './widgets/popup/popup.component';
+import {ImgGalleryComponent} from './widgets/imgGallery/imgGallery.component';
 
 
 @NgModule({
@@ -21,7 +23,9 @@ import {LoginService} from './services/login.service';
     StartComponent,
     AddEntryComponent,
     LoginComponent,
-    ProgressBarComponent
+    ProgressBarComponent,
+    PopupComponent,
+    ImgGalleryComponent
   ],
   imports: [
     BrowserModule,

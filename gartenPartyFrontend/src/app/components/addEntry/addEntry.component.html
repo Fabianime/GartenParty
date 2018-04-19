@@ -3,9 +3,13 @@
 <section *ngIf="bLogin">
   <div class="album-info">
     <div class="album-details">
-      <h1>Stuff comse here</h1>
-      <p></p>
+      <!-- <img src="assets/waitingGIF.gif"> -->
+      <div style="width: 100%" (click)="test()" class="youtube"><h3>Youtube</h3></div>
+      <div *ngIf="aData.length > 0" class="element" [ngClass]="{'fadeIn' : bTest}">
+        <input [(ngModel)]="searchString"><br>
+        <app-img-gallery [data]="aData"></app-img-gallery>
+      </div>
+      <app-popup [header]="popupHeader" [body]="popupBody" [footer]="popupFooter" [bShow]="bChange"></app-popup>
     </div>
   </div>
 </section>
-
