@@ -14,12 +14,17 @@ export class AddEntryComponent implements OnInit {
   constructor(private loginService: LoginService, private http: HttpClient) {
   }
 
-  public test = document.cookie;
+  public testf = document.cookie;
+  public popupHeader = 'Header';
+  public popupBody = '<p>Body</p>';
+  public popupFooter = 'Footer';
+  public bChange = false;
 
-  private _searchString;
+  private _searchString = 'eminem';
   private _endpointUrl = 'https://www.googleapis.com/youtube/v3/search';
 
   public aData = [];
+  public bTest = false;
 
   @Output() searchStringChange = new EventEmitter();
 
@@ -30,6 +35,18 @@ export class AddEntryComponent implements OnInit {
 
   ngOnInit() {
     this.checkLogin();
+    this.getSearchResult(this._searchString).subscribe((data) => {
+      this.aData = [];
+      data.items.forEach((element) => {
+        const tmp = {
+          'title': element.snippet.title,
+          'thumbnail': element.snippet.thumbnails.medium,
+          'description': element.snippet.videoId,
+          'link': 'https://www.youtube.com/watch?v=' + element.id.videoId
+        };
+        this.aData.push(tmp);
+      });
+    });
   }
 
   set searchString(val) {
@@ -48,11 +65,7 @@ export class AddEntryComponent implements OnInit {
             };
             this.aData.push(tmp);
           });
-          console.log(this.aData);
         });
-      } else {
-        console.log(val);
-        console.log(this._searchString);
       }
     }, 1000);
   }
@@ -65,6 +78,10 @@ export class AddEntryComponent implements OnInit {
     const q = '&q=' + searchValue;
 
     return this.http.get(this._endpointUrl + key + part + maxResults + type + q);
+  }
+
+  public test() {
+    this.bTest = !this.bTest;
   }
 
   private checkLogin() {

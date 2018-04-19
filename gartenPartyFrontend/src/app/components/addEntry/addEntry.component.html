@@ -3,22 +3,13 @@
 <section *ngIf="bLogin">
   <div class="album-info">
     <div class="album-details">
-      <input [(ngModel)]="searchString">
-
-      <img src="assets/waitingGIF.gif">
-      <div *ngIf="aData.length > 0">
-        <ng-container *ngFor="let data of aData">
-          <h3>{{data.title}}</h3>
-          <a target="_blank" [href]="data.link">
-            <img [src]="data.thumbnail.url" [width]="data.thumbnail.width" [height]="data.thumbnail.height">
-          </a>
-          <br>
-          <br>
-          <!-- <p>{{data.description}}</p> -->
-        </ng-container>
+      <!-- <img src="assets/waitingGIF.gif"> -->
+      <div style="width: 100%" (click)="test()" class="youtube"><h3>Youtube</h3></div>
+      <div *ngIf="aData.length > 0" class="element" [ngClass]="{'fadeIn' : bTest}">
+        <input [(ngModel)]="searchString"><br>
+        <app-img-gallery [data]="aData"></app-img-gallery>
       </div>
-      <p></p>
+      <app-popup [header]="popupHeader" [body]="popupBody" [footer]="popupFooter" [bShow]="bChange"></app-popup>
     </div>
   </div>
 </section>
-

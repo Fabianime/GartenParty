@@ -12,6 +12,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {AddEntryComponent} from './components/addEntry/addEntry.component';
 import {LoginComponent} from './widgets/login/login.component';
 import {LoginService} from './services/login.service';
+import {PopupComponent} from './widgets/popup/popup.component';
+import {ImgGalleryComponent} from './widgets/imgGallery/imgGallery.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import {LoginService} from './services/login.service';
     AppComponent,
     StartComponent,
     AddEntryComponent,
-    LoginComponent
+    LoginComponent,
+    PopupComponent,
+    ImgGalleryComponent
   ],
   imports: [
     BrowserModule,
