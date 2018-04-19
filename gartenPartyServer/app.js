@@ -11,6 +11,7 @@ var getCurrentTrack = require('./routes/get/getCurrentTrack');
 
 //set
 var setPlayList = require('./routes/set/setPlayList');
+var setCurrentTrack = require('./routes/set/setCurrentTrack');
 
 //check
 var checkPartys = require('./routes/check/checkPartys');
@@ -34,6 +35,7 @@ app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+    res.setHeader('Access-Control-Allow-Origin', 'http://192.168.0.31:4200');
 
     // Request methods you wish to allow (POST, OPTIONS, PUT, PATCH, DELETE)
     res.setHeader('Access-Control-Allow-Methods', 'GET');
@@ -54,6 +56,7 @@ app.use('/getCurrentTrack', getCurrentTrack);
 
 //set
 app.use('/setPlayList', setPlayList);
+app.use('/setCurrentTrack', setCurrentTrack);
 
 //check
 app.use('/checkPartys', checkPartys);

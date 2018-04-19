@@ -5,16 +5,16 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class LoginService {
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, ) {
   }
-
-  private _endpointUrl = 'http://localhost:8888';
+  private url = location.href.substr(location.href.search('//') + 2, location.href.substr(location.href.search('//') + 2).search(':'));
+  private _endpointUrl = 'http://' + this.url + ':8888';
 
   public checkGartenPartyID(): Observable<any> {
     return this.http.get(this._endpointUrl + '/checkPartys/' + this.getGartenPartyID());
   }
 
-  private getGartenPartyID() {
+  public getGartenPartyID() {
     const strCookies = document.cookie.split(';');
     const cookieName = 'gartenPartyID';
     let returnValue = '';

@@ -11,6 +11,7 @@ import {MusicService} from './services/music.service';
 import {HttpClientModule} from '@angular/common/http';
 import {AddEntryComponent} from './components/addEntry/addEntry.component';
 import {LoginComponent} from './widgets/login/login.component';
+import {ProgressBarComponent} from './widgets/progress-bar/progress-bar.component';
 import {LoginService} from './services/login.service';
 
 
@@ -19,7 +20,8 @@ import {LoginService} from './services/login.service';
     AppComponent,
     StartComponent,
     AddEntryComponent,
-    LoginComponent
+    LoginComponent,
+    ProgressBarComponent
   ],
   imports: [
     BrowserModule,
