@@ -1,0 +1,68 @@
+.fadeIn {
+    opacity: 1;
+    display: block !important;
+  }
+  
+  .rightCorner{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 10px;
+    display: none;
+  }
+  
+  .rightCornerList {
+    list-style: none;
+    padding: 10px 5px 10px 20px;
+  }
+  
+  .listView{
+    padding: 0px 0px 0px 10px;
+    margin-bottom: 15px;
+  }
+  .listView:hover{
+    cursor: pointer;
+  }
+  
+  .listViewText {
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .arrowIcon{
+    color: #037f8c;
+    font-size: 20px;
+  }
+  
+  .rightCornerListPoint{
+    display: flow-root;
+  }
+  
+  .listPointText{
+    float: left;
+  }
+  
+  .deleteVideo{
+    color: #8c0303;
+    font-size: 20px;
+    float: right;
+  }
+  .deleteVideo:hover{
+    cursor: pointer;
+  }
+  
+  .closeList{
+    color: #037f8c;
+    font-size: 20px;
+    float: right;
+    margin-top: -3px;
+  }
+  .closeList:hover{
+    cursor: pointer;
+  }
+  
+  .undo:hover{
+    cursor: pointer;
+  }

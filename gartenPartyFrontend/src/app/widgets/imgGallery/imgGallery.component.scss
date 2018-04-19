@@ -4,13 +4,14 @@ a {
 div.gallery {
   border: 1px solid #ccc;
   max-width: 360px;
+  display: grid;
 }
 
 div.gallery:hover {
   border: 1px solid #777;
 }
 
-div.desc {
+div.title {
   text-align: center;
   vertical-align: middle;
   height: 36px;
@@ -64,4 +65,16 @@ div.gallery img {
   content: "";
   display: table;
   clear: both;
+}
+
+.selectedVideo{
+  background-color: red;
+  
+  div.title {
+    opacity: .7;
+  }
+  
+  img {
+    opacity: .7;
+  }
 }

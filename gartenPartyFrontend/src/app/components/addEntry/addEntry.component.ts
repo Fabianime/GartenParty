@@ -19,10 +19,12 @@ export class AddEntryComponent implements OnInit {
   public popupBody = '<p>Body</p>';
   public popupFooter = 'Footer';
   public bChange = false;
+  public showLoading = false;
 
-  private _searchString = 'eminem';
+  private _searchString;
   private _endpointUrl = 'https://www.googleapis.com/youtube/v3/search';
 
+  public selectedVideos = [];
   public aData = [];
   public bTest = false;
 
@@ -35,32 +37,23 @@ export class AddEntryComponent implements OnInit {
 
   ngOnInit() {
     this.checkLogin();
-    this.getSearchResult(this._searchString).subscribe((data) => {
-      this.aData = [];
-      data.items.forEach((element) => {
-        const tmp = {
-          'title': element.snippet.title,
-          'thumbnail': element.snippet.thumbnails.medium,
-          'description': element.snippet.videoId,
-          'link': 'https://www.youtube.com/watch?v=' + element.id.videoId
-        };
-        this.aData.push(tmp);
-      });
-    });
   }
 
   set searchString(val) {
     this._searchString = val;
     this.searchStringChange.emit(this._searchString);
+    this.showLoading = true;
+    this.aData = [];
+
     setTimeout(() => {
       if (val === this._searchString) {
         this.getSearchResult(this._searchString).subscribe((data) => {
-          this.aData = [];
+          this.showLoading = false;
           data.items.forEach((element) => {
             const tmp = {
-              'title': element.snippet.title,
+              'title': (element.snippet.title.length > 55? element.snippet.title.substring(0,52)+'...':element.snippet.title),
               'thumbnail': element.snippet.thumbnails.medium,
-              'description': element.snippet.videoId,
+              'description': element.snippet.description,
               'link': 'https://www.youtube.com/watch?v=' + element.id.videoId
             };
             this.aData.push(tmp);
@@ -80,6 +73,13 @@ export class AddEntryComponent implements OnInit {
     return this.http.get(this._endpointUrl + key + part + maxResults + type + q);
   }
 
+  public getAutoComplete(searchValue: string): Observable<any> {
+    //fake callback ausführen damit man keienn acces fehler bekommt
+    return this.http.get('http://suggestqueries.google.com/complete/search?client=firefox&ds=ytk&q=' + searchValue);
+  }
+
+
+
   public test() {
     this.bTest = !this.bTest;
   }
@@ -94,4 +94,5 @@ export class AddEntryComponent implements OnInit {
       }
     });
   }
+
 }

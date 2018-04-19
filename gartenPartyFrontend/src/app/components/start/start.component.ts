@@ -24,7 +24,6 @@ export class StartComponent implements OnInit
   }  
 
   public ngAfterViewInit (): void {
-    console.log('load');
     this.getCurrentTrackFromServer();
   } 
 

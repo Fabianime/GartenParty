@@ -1,0 +1,17 @@
+<div class="rightCorner listView" *ngIf="selectedVideos.length > 0 || undoList.length > 0"  (click)="toggleVideoSelectedView()" [ngClass]="{'fadeIn' : !showSelectedView}">
+    <p class="listViewText"><span class="arrowIcon">&#171;</span> {{selectedVideos.length}}</p>
+</div>
+
+<ul class="rightCorner rightCornerList" *ngIf="selectedVideos.length > 0 || undoList.length > 0" [ngClass]="{'fadeIn' : showSelectedView}">
+    <li class="rightCornerListPoint arrowIcon">
+    <span class="listPointText">Selected Videos</span>
+    <span class="closeList" (click)="toggleVideoSelectedView()">&#10006;</span>
+    </li>
+    <li class="arrowIcon undo" *ngIf="undoList.length > 0" (click)="undoDeleteFromSelectedList()">
+    Undo &#x21B6;
+    </li>
+    <li class="rightCornerListPoint" *ngFor="let listPoint of selectedVideos">
+    <span class="listPointText">{{listPoint}}&nbsp;&nbsp;&nbsp;</span>
+    <span class="deleteVideo" (click)="deleteVideoFromSelectedList(listPoint)"> &#10006;</span>
+    </li>
+</ul>

@@ -15,6 +15,7 @@ import {ProgressBarComponent} from './widgets/progress-bar/progress-bar.componen
 import {LoginService} from './services/login.service';
 import {PopupComponent} from './widgets/popup/popup.component';
 import {ImgGalleryComponent} from './widgets/imgGallery/imgGallery.component';
+import { HistoryComponent } from './widgets/history/history.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import {ImgGalleryComponent} from './widgets/imgGallery/imgGallery.component';
     LoginComponent,
     ProgressBarComponent,
     PopupComponent,
-    ImgGalleryComponent
+    ImgGalleryComponent,
+    HistoryComponent
   ],
   imports: [
     BrowserModule,

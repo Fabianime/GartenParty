@@ -1,9 +1,8 @@
-<div class="responsive" *ngFor="let element of data">
-  <div class="gallery">
-    <a target="_blank" [href]="element.link">
-      <img [src]="element.thumbnail.url">
-    </a>
-    <div class="desc">{{element.title}}</div>
+<div class="responsive" *ngFor="let element of data" (click)="toggleSelectedVideo(element.title)">
+  <div class="gallery" [ngClass]="{'selectedVideo' : checkIfVideoSelected(element.title)}">
+    <img [src]="element.thumbnail.url">
+    <!-- <a target="_blank" [href]="element.link"></a> -->
+    <div class="title">{{element.title}}</div>
   </div>
 </div>
 
