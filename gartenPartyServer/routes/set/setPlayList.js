@@ -13,14 +13,8 @@ router.get('/:gartenPartyID/:aTitles', function(req, res, next) {
 	var sError = "";
 	var playList = {};
 
-	if(aTitles.charAt(0) !== "["){
-		bError = true;
-		sError = "Second Argument is not an Array";
-		console.log(e);
-	}
-
 	try{
-		aTitles = JSON.parse(aTitles);
+		aTitles = JSON.parse('' + aTitles);
 	}catch(e){
 		bError = true;
 		sError = "Second Argument is not an Array";

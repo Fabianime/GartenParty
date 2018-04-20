@@ -11,7 +11,7 @@
     Undo &#x21B6;
     </li>
     <li class="rightCornerListPoint" *ngFor="let listPoint of selectedVideos">
-    <span class="listPointText">{{listPoint}}&nbsp;&nbsp;&nbsp;</span>
+    <span class="listPointText">{{listPoint.name}}&nbsp;&nbsp;&nbsp;</span>
     <span class="deleteVideo" (click)="deleteVideoFromSelectedList(listPoint)"> &#10006;</span>
     </li>
 </ul>

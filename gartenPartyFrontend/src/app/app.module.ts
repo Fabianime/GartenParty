@@ -16,6 +16,7 @@ import {LoginService} from './services/login.service';
 import {PopupComponent} from './widgets/popup/popup.component';
 import {ImgGalleryComponent} from './widgets/imgGallery/imgGallery.component';
 import { HistoryComponent } from './widgets/history/history.component';
+import {YoutubeService} from './services/youtube.service';
 
 
 @NgModule({
@@ -36,7 +37,7 @@ import { HistoryComponent } from './widgets/history/history.component';
     FormsModule,
     AppMaterialModule
   ],
-  providers: [MusicService, LoginService],
+  providers: [MusicService, LoginService, YoutubeService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

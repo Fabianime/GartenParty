@@ -5,8 +5,9 @@ import {Observable} from 'rxjs/Observable';
 @Injectable()
 export class LoginService {
 
-  constructor(private http: HttpClient, ) {
+  constructor(private http: HttpClient,) {
   }
+
   private url = location.href.substr(location.href.search('//') + 2, location.href.substr(location.href.search('//') + 2).search(':'));
   private _endpointUrl = 'http://' + this.url + ':8888';
 
@@ -19,8 +20,8 @@ export class LoginService {
     const cookieName = 'gartenPartyID';
     let returnValue = '';
     for (let i = 0; i < strCookies.length; i++) {
-      let cookie = strCookies[i];
-      if(cookie.indexOf(cookieName) >= 0){
+      const cookie = strCookies[i];
+      if (cookie.indexOf(cookieName) >= 0) {
         returnValue = cookie.substring(cookieName.length + 1, cookie.length);
       }
     }

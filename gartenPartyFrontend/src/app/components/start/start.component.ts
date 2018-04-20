@@ -1,8 +1,8 @@
-import { Component, OnInit, EventEmitter, AfterViewInit } from '@angular/core';
-import { MusicService } from '../../services/music.service';
-import { LoginService } from '../../services/login.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/interval'; 
+import {Component, OnInit, EventEmitter, AfterViewInit} from '@angular/core';
+import {MusicService} from '../../services/music.service';
+import {LoginService} from '../../services/login.service';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/observable/interval';
 import 'rxjs/add/operator/takeWhile';
 
 
@@ -11,8 +11,7 @@ import 'rxjs/add/operator/takeWhile';
   templateUrl: './start.component.html',
   styleUrls: ['./start.component.scss']
 })
-export class StartComponent implements OnInit
- {
+export class StartComponent implements OnInit {
 
   constructor(private musicService: MusicService,
               private loginService: LoginService) {
@@ -21,11 +20,11 @@ export class StartComponent implements OnInit
   ngOnInit() {
     this.checkLogin();
     this.getPlayList();
-  }  
+  }
 
-  public ngAfterViewInit (): void {
+  public ngAfterViewInit(): void {
     this.getCurrentTrackFromServer();
-  } 
+  }
 
   public playlist = [];
 
@@ -72,21 +71,21 @@ export class StartComponent implements OnInit
   }
 
   private getActualCurrentTrack(trackFromServer, checkFirstTime = false) {
-    const timeDifferenceInMilliseconds = new Date().getTime() - new Date(trackFromServer.start).getTime();    
+    const timeDifferenceInMilliseconds = new Date().getTime() - new Date(trackFromServer.start).getTime();
     const timeDifferenceAsDate = new Date(timeDifferenceInMilliseconds);
-    
-    let trackPositionInPlaylist = trackFromServer.playlistPosition -1;
+
+    let trackPositionInPlaylist = trackFromServer.playlistPosition - 1;
     let trackLengthAsArray = this.playlist[trackPositionInPlaylist].length.split(':');
-    let trackLengthAsDate = new Date(trackLengthAsArray[0] * 60000  + trackLengthAsArray[1] * 1000);
-    let timeToAdd = [0,0];
+    let trackLengthAsDate = new Date(trackLengthAsArray[0] * 60000 + trackLengthAsArray[1] * 1000);
+    let timeToAdd = [0, 0];
 
     let checkTrackLength = false;
 
-    while(!checkTrackLength){
-      if(timeDifferenceAsDate > trackLengthAsDate) {
+    while (!checkTrackLength) {
+      if (timeDifferenceAsDate > trackLengthAsDate) {
         trackPositionInPlaylist++;
 
-        if(trackPositionInPlaylist >= this.playlist.length){
+        if (trackPositionInPlaylist >= this.playlist.length) {
           trackPositionInPlaylist = 0;
         }
         timeToAdd[0] += parseInt(trackLengthAsArray[0]);
@@ -94,50 +93,50 @@ export class StartComponent implements OnInit
 
         trackLengthAsArray = this.playlist[trackPositionInPlaylist].length.split(':');
 
-        trackLengthAsDate = this.addMinutes(trackLengthAsDate,parseInt(trackLengthAsArray[0]));
-        trackLengthAsDate = this.addSeconds(trackLengthAsDate,parseInt(trackLengthAsArray[1]));
+        trackLengthAsDate = this.addMinutes(trackLengthAsDate, parseInt(trackLengthAsArray[0]));
+        trackLengthAsDate = this.addSeconds(trackLengthAsDate, parseInt(trackLengthAsArray[1]));
 
       } else {
         checkTrackLength = true;
         trackFromServer.start = new Date(trackFromServer.start);
-        
-        trackFromServer.start = this.addMinutes(trackFromServer.start,timeToAdd[0]);
-        trackFromServer.start = this.addSeconds(trackFromServer.start,timeToAdd[1]);
+
+        trackFromServer.start = this.addMinutes(trackFromServer.start, timeToAdd[0]);
+        trackFromServer.start = this.addSeconds(trackFromServer.start, timeToAdd[1]);
         trackFromServer.playlistPosition = trackPositionInPlaylist + 1;
 
       }
     }
     this.trackName = this.playlist[trackFromServer.playlistPosition - 1].name;
-    if(checkFirstTime){
+    if (checkFirstTime) {
       this.set_CurrentTrack(trackFromServer);
-    }else{
+    } else {
       this._currentTrack = trackFromServer;
     }
-    
+
   }
 
-  private handleProgressBar (){
-    if(this._currentTrack !== undefined){
+  private handleProgressBar() {
+    if (this._currentTrack !== undefined) {
       this.setTrackLength(this.playlist[this._currentTrack.playlistPosition - 1].length);
       let i = 0;
-        Observable.interval(200)
+      Observable.interval(200)
         .takeWhile(() => !this._checkPlayLength)
-        .subscribe(i => { 
+        .subscribe(i => {
           const timeDifferenceInMilliseconds = Math.abs(new Date().getTime() - new Date(this._currentTrack.start).getTime());
           const timeDifferenceAsDate = new Date(timeDifferenceInMilliseconds);
 
           const trackTimePalyedMin = timeDifferenceAsDate.getMinutes();
           const trackTimePalyedSec = timeDifferenceAsDate.getSeconds();
           let trackTimePalyedSecDisplayed = trackTimePalyedSec.toString();
-          if(trackTimePalyedSec < 10){
+          if (trackTimePalyedSec < 10) {
             trackTimePalyedSecDisplayed = '0' + trackTimePalyedSec;
           }
 
-          this.trackTimePalyed =  trackTimePalyedMin + ':' + trackTimePalyedSecDisplayed;
+          this.trackTimePalyed = trackTimePalyedMin + ':' + trackTimePalyedSecDisplayed;
           const trackTimePalyedMs = trackTimePalyedMin * 60000 + trackTimePalyedSec * 1000;
 
-          this.value = this.precisionRound(trackTimePalyedMs/this.trackLengthMs*100,4);
-          if(timeDifferenceInMilliseconds > this.trackLengthMs){
+          this.value = this.precisionRound(trackTimePalyedMs / this.trackLengthMs * 100, 4);
+          if (timeDifferenceInMilliseconds > this.trackLengthMs) {
             this.getActualCurrentTrack(this._currentTrack);
             this.setTrackLength(this.playlist[this._currentTrack.playlistPosition - 1].length);
           }
@@ -148,14 +147,14 @@ export class StartComponent implements OnInit
     }
   }
 
-  private addMinutes (date: Date,minutes){
-      date.setMinutes(date.getMinutes() + minutes);
-      return date;
+  private addMinutes(date: Date, minutes) {
+    date.setMinutes(date.getMinutes() + minutes);
+    return date;
   }
 
-  private addSeconds (date: Date,seconds){
+  private addSeconds(date: Date, seconds) {
     date.setSeconds(date.getSeconds() + seconds);
-      return date;
+    return date;
   }
 
   private precisionRound(number, precision) {
@@ -167,13 +166,13 @@ export class StartComponent implements OnInit
     document.location.href = '/addEntry';
   }
 
-  private setTrackLength (trackLength){
+  private setTrackLength(trackLength) {
     this.trackLength = trackLength;
     const trackLengthSplited = this.trackLength.split(':');
     this.trackLengthMs = parseInt(trackLengthSplited[0]) * 60000 + parseInt(trackLengthSplited[1]) * 1000;
   }
 
-  private checkLogin (){
+  private checkLogin() {
     this.loginService.checkGartenPartyID().subscribe((data) => {
       if (data.status === 200) {
         this.bLogin = data.response;
