@@ -11,20 +11,20 @@ export class ImgGalleryComponent {
   public data;
 
   @Input()
-  public selectedVideos: Array;
+  public selectedVideos;
 
   constructor() {
   }
 
-  public toggleSelectedVideo(val){
-    if(this.selectedVideos.indexOf(val) >= 0){
-      this.selectedVideos.splice(this.selectedVideos.indexOf(val),1);
-    }else{
+  public toggleSelectedVideo(val) {
+    if (this.selectedVideos.indexOf(val) >= 0) {
+      this.selectedVideos.splice(this.selectedVideos.indexOf(val), 1);
+    } else {
       this.selectedVideos.push(val);
     }
   }
 
-  public checkIfVideoSelected(val){
+  public checkIfVideoSelected(val) {
     return this.selectedVideos.indexOf(val) >= 0;
   }
 

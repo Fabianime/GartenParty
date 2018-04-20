@@ -8,7 +8,7 @@ import {Component, Input} from '@angular/core';
 export class HistoryComponent {
 
   @Input()
-  public selectedVideos: Array;
+  public selectedVideos;
 
   constructor() {
   }
@@ -16,22 +16,22 @@ export class HistoryComponent {
   public showSelectedView = false;
   public undoList = [];
 
-  public toggleVideoSelectedView(){
+  public toggleVideoSelectedView() {
     this.showSelectedView = !this.showSelectedView;
   }
 
-  public deleteVideoFromSelectedList(val){
+  public deleteVideoFromSelectedList(val) {
     const indexOfDeletedVideo = this.selectedVideos.indexOf(val);
-    if(indexOfDeletedVideo >= 0){
+    if (indexOfDeletedVideo >= 0) {
 
-      this.undoList.push({"value":this.selectedVideos[indexOfDeletedVideo],"index":indexOfDeletedVideo});
-      this.selectedVideos.splice(this.selectedVideos.indexOf(val),1);
+      this.undoList.push({'value': this.selectedVideos[indexOfDeletedVideo], 'index': indexOfDeletedVideo});
+      this.selectedVideos.splice(this.selectedVideos.indexOf(val), 1);
     }
   }
 
-  public undoDeleteFromSelectedList(){
-    const videoToUndo = this.undoList[this.undoList.length-1];
-    this.selectedVideos.splice(videoToUndo.index,0,videoToUndo.value);
+  public undoDeleteFromSelectedList() {
+    const videoToUndo = this.undoList[this.undoList.length - 1];
+    this.selectedVideos.splice(videoToUndo.index, 0, videoToUndo.value);
     this.undoList.pop();
   }
 
