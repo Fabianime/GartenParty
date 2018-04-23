@@ -7,7 +7,7 @@ router.get('/:gartenPartyID/:track', function(req, res, next) {
 	const gartenPartyID = req.params.gartenPartyID;
 	var track = req.params.track;
 
-	const sFilePath = "currentTrack/" + gartenPartyID + '.json';
+	const sFilePath = "currentTrack\\" + gartenPartyID + '.json';
 
 	var bError = false;
 	var sError = "";

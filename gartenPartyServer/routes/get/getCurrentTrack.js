@@ -6,7 +6,7 @@ var fs = require('fs');
 router.get('/:gartenPartyID', function(req, res, next) {
 	var gartenPartyID = req.params.gartenPartyID;
 	try{
-		var currentTrack = fs.readFileSync("currentTrack/" + gartenPartyID + '.json', "UTF-8");
+		var currentTrack = fs.readFileSync("currentTrack\\" + gartenPartyID + '.json', "UTF-8");
 	}
 	catch(err){
 		res.send(JSON.stringify({"status": 500, "error": err, "response": null})); 

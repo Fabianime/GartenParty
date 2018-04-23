@@ -5,7 +5,7 @@ var fs = require('fs');
 /* GET home page. */
 router.get('/:gartenPartyID', function(req, res, next) {
 	var gartenPartyID = req.params.gartenPartyID;
-	var playList = fs.readFileSync("playLists/" + gartenPartyID + '.json', "UTF-8");
+	var playList = fs.readFileSync("playLists\\" + gartenPartyID + '.json', "UTF-8");
 
 	if(playList == ""){
 		res.send(JSON.stringify({"status": 500, "error": error, "response": null})); 
