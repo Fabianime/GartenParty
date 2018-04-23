@@ -1,12 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+const path = require('path');
 
 /* GET currentTrack listing. */
 router.get('/:gartenPartyID', function(req, res, next) {
 	var gartenPartyID = req.params.gartenPartyID;
 	try{
-		var currentTrack = fs.readFileSync("currentTrack\\" + gartenPartyID + '.json', "UTF-8");
+		var currentTrack = fs.readFileSync(path.normalize("./currentTrack/") + gartenPartyID + '.json', "UTF-8");
 	}
 	catch(err){
 		res.send(JSON.stringify({"status": 500, "error": err, "response": null})); 

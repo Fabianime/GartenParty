@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+const path = require('path');
 
 /* GET home page. */
 router.get('/:gartenPartyID/:aTitles', function(req, res, next) {
 	const gartenPartyID = req.params.gartenPartyID;
 	var aTitles = req.params.aTitles;
 
-	const sFilePath = "playLists\\" + gartenPartyID + '.json';
+	const sFilePath = path.normalize("./playLists/") + gartenPartyID + '.json';
 
 	var bError = false;
 	var sError = "";

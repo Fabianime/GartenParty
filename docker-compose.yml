@@ -1,11 +1,11 @@
 version: '2'
 
 services:
-  node:
-    build: gartenPartyServer
-    ports:
-      - 8888:8888
   angular:
     build: gartenPartyFrontend
     ports: 
       - 4200:4200
+  node:
+    build: gartenPartyServer
+    ports:
+      - 8888:8888

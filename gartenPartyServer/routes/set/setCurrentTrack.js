@@ -1,13 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var fs = require('fs');
+const path = require('path');
 
 /* GET users listing. */
 router.get('/:gartenPartyID/:track', function(req, res, next) {
 	const gartenPartyID = req.params.gartenPartyID;
 	var track = req.params.track;
 
-	const sFilePath = "currentTrack\\" + gartenPartyID + '.json';
+	const sFilePath = path.normalize("./currentTrack/") + gartenPartyID + '.json';
 
 	var bError = false;
 	var sError = "";
