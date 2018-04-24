@@ -10,6 +10,4 @@ services:
     ports:
       - "8888:8888"
     volumes:
-      - type: bind
-        source: ./gartenPartyServer/playlists
-        target: /usr/src/app/playlists
+      - ./gartenPartyServer/playlists:/usr/src/app/playlists
