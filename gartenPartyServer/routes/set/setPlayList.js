@@ -8,7 +8,7 @@ router.get('/:gartenPartyID/:aTitles', function(req, res, next) {
 	const gartenPartyID = req.params.gartenPartyID;
 	var aTitles = req.params.aTitles;
 
-	const sFilePath = path.normalize("./playLists/") + gartenPartyID + '.json';
+	const sFilePath = path.resolve("./playLists/", gartenPartyID + '.json');
 
 	var bError = false;
 	var sError = "";
@@ -37,7 +37,7 @@ router.get('/:gartenPartyID/:aTitles', function(req, res, next) {
 					playList = JSON.parse(playList);
 				}catch(e){
 					bError = true;
-					sError = "Playlist is broken. Pleas Contact an Admin."
+					sError = "Playlist is broken. Please Contact an Admin."
 					console.log(e);
 				}
 				if(!bError){

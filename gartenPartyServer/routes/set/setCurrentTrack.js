@@ -8,7 +8,7 @@ router.get('/:gartenPartyID/:track', function(req, res, next) {
 	const gartenPartyID = req.params.gartenPartyID;
 	var track = req.params.track;
 
-	const sFilePath = path.normalize("./currentTrack/") + gartenPartyID + '.json';
+	const sFilePath = path.resolve("currentTrack",  gartenPartyID + '.json');
 
 	var bError = false;
 	var sError = "";
@@ -26,7 +26,7 @@ router.get('/:gartenPartyID/:track', function(req, res, next) {
 			track = JSON.parse(track);
 		}catch(e){
 			bError = true;
-			sError = "Track is broken. Pleas Contact an Admin."
+			sError = "Track is broken. Please Contact an Admin."
 			console.log(e);
 		}
 
