@@ -1,4 +1,4 @@
-version: '3.2'
+version: '2'
 
 services:
   angular:
@@ -11,5 +11,5 @@ services:
       - "8888:8888"
     volumes:
       - type: bind
-        source: ./gartenPartyServer/playLists
-        target: /usr/src/app/playLists
+        source: ./gartenPartyServer/playlists
+        target: /usr/src/app/playlists

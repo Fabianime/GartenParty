@@ -8,7 +8,7 @@ router.get('/:gartenPartyID/:aTitles', function(req, res, next) {
 	const gartenPartyID = req.params.gartenPartyID;
 	var aTitles = req.params.aTitles;
 
-	const sFilePath = path.resolve("./playLists/", gartenPartyID + '.json');
+	const sFilePath = path.resolve("./playlists/", gartenPartyID + '.json');
 
 	var bError = false;
 	var sError = "";
