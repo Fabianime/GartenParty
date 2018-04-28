@@ -1,1 +1,2 @@
-docker-compose up
+gartenPartyFrontend/build.sh
+docker-compose up --build
