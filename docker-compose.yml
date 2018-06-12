@@ -1,15 +1,16 @@
 version: '3.2'
 
 services:
-  angular:
-    build: gartenPartyFrontend
-    ports: 
-      - "4200:4200"
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./gartenPartyFrontend/dist:/usr/share/nginx/html
+      - ./gartenPartyFrontend/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "3000:80"
   node:
     build: gartenPartyServer
     ports:
       - "8888:8888"
     volumes:
-      - type: bind
-        source: ./gartenPartyServer/playlists
-        target: /usr/src/app/playlists
+      - ./gartenPartyServer/playlists:/usr/src/app/playlists

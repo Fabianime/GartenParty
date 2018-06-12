@@ -1,0 +1,35 @@
+<div class="background"></div>
+<section>
+  <div class="album-info">
+    <div class="album-art"><img src="https://target.scene7.com/is/image/Target/51223401?wid=520&amp;hei=520&amp;fmt=pjpeg">
+      <div class="actions">
+        <div class="play" (click)="addEntryRedirect()">ADD Entry</div>
+      </div>
+    </div>
+    <div class="album-details">
+      <h1>{{trackName}}</h1>
+      <span>
+        <span></span>
+      </span>
+      <p></p><!--Some randomt texts in the p -->
+    </div>
+  </div>
+  <div class="speakers"></div>
+  <div class="progress-bar-container">
+    <p class="progress-bar-text">
+      {{trackTimePalyed}}
+    </p>
+    <app-progress-bar class="progress-bar" [value]="value"></app-progress-bar>
+    <p class="progress-bar-text">
+      {{trackLength}}
+    </p>
+  </div>
+  <div class="album-tracks">
+    <ol>
+      <li *ngFor="let title of playlist">
+        <span>{{title.name}}</span>
+        <span>{{title.length}}</span>
+      </li>
+    </ol>
+  </div>
+</section>
