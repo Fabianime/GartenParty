@@ -17,6 +17,7 @@ import {PopupComponent} from './widgets/popup/popup.component';
 import {ImgGalleryComponent} from './widgets/imgGallery/imgGallery.component';
 import { HistoryComponent } from './widgets/history/history.component';
 import {YoutubeService} from './services/youtube.service';
+import {PlaylistComponent} from './widgets/playlist/playlist.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import {YoutubeService} from './services/youtube.service';
     ProgressBarComponent,
     PopupComponent,
     ImgGalleryComponent,
-    HistoryComponent
+    HistoryComponent,
+    PlaylistComponent
   ],
   imports: [
     BrowserModule,

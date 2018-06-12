@@ -9,7 +9,7 @@ import {LoginService} from '../../services/login.service';
 
 export class LoginComponent {
 
-  private gartenPartyId;
+  public gartenPartyId;
   private _bLogin;
 
   @Output() bLoginChange = new EventEmitter();
@@ -27,6 +27,11 @@ export class LoginComponent {
   constructor(private loginService: LoginService) {
   }
 
+  private setGartenPartyID() {
+    this.loginService.setGartenPartyID(this.gartenPartyId);
+    this.checkLogin();
+  }
+
   private checkLogin() {
     this.loginService.checkGartenPartyID().subscribe((data) => {
       if (data.status === 200) {
@@ -36,22 +41,6 @@ export class LoginComponent {
         // toDO: return False + logs mit fehler schreiben
       }
     });
-  }
-
-  private setGartenPartyID() {
-    this.createCookie('gartenPartyID', this.gartenPartyId, 1);
-    this.checkLogin();
-  }
-
-  private createCookie(name, value, days) {
-    let expires = '';
-
-    if (days) {
-      const date = new Date();
-      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-      expires = '; expires=' + date.toUTCString();
-    }
-    document.cookie = name + '=' + value + expires + '; path=/';
   }
 
 }
