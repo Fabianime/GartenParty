@@ -3,6 +3,6 @@
   <li><a id="addEntry" href="/addEntry" [ngClass]="{'active':HomeNav == '/addEntry'}">Add Entry</a></li>
 
   <li class="logout" *ngIf="bLogin"><a id="logout" href="/" (click)="logout()">Logout</a></li>
-  <li class="partyInfo" *ngIf="bLogin"><p>You are logged into Party: {{gartenPartyID}}</p></li>
+  <li class="partyInfo" *ngIf="bLogin"><p>You are logged into Playlist: {{gartenPartyID}}</p></li>
 </ul>
 <router-outlet></router-outlet>

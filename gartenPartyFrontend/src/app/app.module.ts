@@ -18,6 +18,7 @@ import {ImgGalleryComponent} from './widgets/imgGallery/imgGallery.component';
 import { HistoryComponent } from './widgets/history/history.component';
 import {YoutubeService} from './services/youtube.service';
 import {PlaylistComponent} from './widgets/playlist/playlist.component';
+import {CheckRoutComponent} from './components/check-rout/check-rout.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import {PlaylistComponent} from './widgets/playlist/playlist.component';
     PopupComponent,
     ImgGalleryComponent,
     HistoryComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    CheckRoutComponent
   ],
   imports: [
     BrowserModule,

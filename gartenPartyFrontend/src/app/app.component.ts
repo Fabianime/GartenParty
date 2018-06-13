@@ -20,7 +20,7 @@ export class AppComponent {
       if (navPart !== undefined && navPart.indexOf('?') > 0) {
         navPart = navPart.substring(0, navPart.indexOf('?'));
       }
-      return this.HomeNav = navPart;
+      this.HomeNav = navPart;
     });
     this.checkLogin();
   }
