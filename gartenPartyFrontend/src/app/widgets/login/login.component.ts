@@ -27,7 +27,7 @@ export class LoginComponent {
   constructor(private loginService: LoginService) {
   }
 
-  private setGartenPartyID() {
+  public setGartenPartyID() {
     this.loginService.setGartenPartyID(this.gartenPartyId);
     this.checkLogin();
   }
