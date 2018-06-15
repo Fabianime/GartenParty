@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 })
 
 export class CheckRoutComponent {
-  private show404 = false;
+  public show404 = false;
   constructor(private loginService: LoginService,
               private router: Router) {
     router.events.subscribe((url: any) => {
