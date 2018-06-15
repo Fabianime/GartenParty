@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { StartComponent } from './components/start/start.component';
 import {AddEntryComponent} from './components/addEntry/addEntry.component';
+import {CheckRoutComponent} from './components/check-rout/check-rout.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
   {
     path: 'addEntry',
     component: AddEntryComponent
+  },
+  {
+    path: '**',
+    component: CheckRoutComponent
   }
   ];
 
