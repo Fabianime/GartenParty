@@ -7,11 +7,11 @@ var bodyParser = require('body-parser');
 
 //get
 var getPlayList = require('./routes/get/getPlayList');
-var getCurrentTrack = require('./routes/get/getCurrentTrack');
+var getStartTrack = require('./routes/get/getStartTrack');
 
 //set
 var setPlayList = require('./routes/set/setPlayList');
-var setCurrentTrack = require('./routes/set/setCurrentTrack');
+var setStartTrack = require('./routes/set/setStartTrack');
 
 //check
 var checkPartys = require('./routes/check/checkPartys');
@@ -57,11 +57,11 @@ app.use(function (req, res, next) {
 });
 //get
 app.use('/getPlayList', getPlayList);
-app.use('/getCurrentTrack', getCurrentTrack);
+app.use('/getStartTrack', getStartTrack);
 
 //set
 app.use('/setPlayList', setPlayList);
-app.use('/setCurrentTrack', setCurrentTrack);
+app.use('/setStartTrack', setStartTrack);
 
 //check
 app.use('/checkPartys', checkPartys);

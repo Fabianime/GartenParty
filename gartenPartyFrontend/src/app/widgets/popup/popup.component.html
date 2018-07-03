@@ -5,7 +5,16 @@
       <span class="close" (click)="closePopup()">&times;</span>
       <h2>{{ header }}</h2>
     </div>
-    <div class="modal-body" [innerHtml]="body"></div>
+    <div class="modal-body" [innerHtml]="innerHtml">
+    </div>
+    <div class="modal-body">
+      <ng-container *ngIf="checkGenerateBody">
+        <p *ngFor="let data of generateBodyData">
+          {{ data.value }}
+          <span class="specialElement" (click)="bodyElementWasClicked(data.id)">&times;</span>
+        </p>
+      </ng-container>
+    </div>
     <div class="modal-footer">
       <h3>{{ footer }}</h3>
     </div>

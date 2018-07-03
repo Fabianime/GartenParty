@@ -14,7 +14,7 @@ import 'rxjs/add/operator/takeWhile';
 export class PlaylistComponent implements OnInit, AfterViewInit {
   public playlist = [];
 
-  private _currentTrack;
+  private _startTrack;
 
   public bError = false;
   public bLogin = false;
@@ -40,11 +40,11 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this.getCurrentTrackFromServer();
+    this.getStartTrackFromServer();
   }
 
-  private set_CurrentTrack(val) {
-    this._currentTrack = val;
+  private set_StartTrack(val) {
+    this._startTrack = val;
     this.handleProgressBar();
   }
 
@@ -59,17 +59,17 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
     });
   }
 
-  private getCurrentTrackFromServer() {
-    this.musicService.getCurrentTrack(this._gartenPartyID).subscribe((data) => {
+  private getStartTrackFromServer() {
+    this.musicService.getStartTrack(this._gartenPartyID).subscribe((data) => {
       if (data.status === 200) {
-        this.getActualCurrentTrack(JSON.parse(data.response));
+        this.getCurrentTrack(JSON.parse(data.response));
       } else {
         this.bError = true;
       }
     });
   }
 
-  private getActualCurrentTrack(trackFromServer) {
+  private getCurrentTrack(trackFromServer) {
     const timeDifferenceInMilliseconds = new Date().getTime() - new Date(trackFromServer.start).getTime();
     const timeDifferenceAsDate = new Date(timeDifferenceInMilliseconds);
 
@@ -94,18 +94,17 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
     }
     trackFromServer = this.updateTrackFromServer(trackFromServer, timeToAdd, trackPositionInPlaylist);
     this.trackName = this.playlist[trackFromServer.playlistPosition - 1].name;
-    this.set_CurrentTrack(trackFromServer);
+    this.set_StartTrack(trackFromServer);
 
   }
 
   private handleProgressBar() {
-    if (this._currentTrack !== undefined) {
-      this.setTrackLength(this.playlist[this._currentTrack.playlistPosition - 1].length);
-      let i = 0;
+    if (this._startTrack !== undefined) {
+      this.setTrackLength(this.playlist[this._startTrack.playlistPosition - 1].length);
       Observable.interval(200)
         .takeWhile(() => !this._checkPlayLength)
-        .subscribe(i => {
-          const timeDifferenceInMilliseconds = Math.abs(new Date().getTime() - new Date(this._currentTrack.start).getTime());
+        .subscribe( i => {
+          const timeDifferenceInMilliseconds = Math.abs(new Date().getTime() - new Date(this._startTrack.start).getTime());
           const timeDifferenceAsDate = new Date(timeDifferenceInMilliseconds);
 
           const trackTimePalyedMin = timeDifferenceAsDate.getMinutes();
@@ -120,13 +119,13 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
 
           this.value = this.precisionRound(trackTimePalyedMs / this.trackLengthMs * 100, 4);
           if (timeDifferenceInMilliseconds > this.trackLengthMs) {
-            this.getActualCurrentTrack(this._currentTrack);
-            this.setTrackLength(this.playlist[this._currentTrack.playlistPosition - 1].length);
+            this.getCurrentTrack(this._startTrack);
+            this.setTrackLength(this.playlist[this._startTrack.playlistPosition - 1].length);
           }
 
         });
     } else {
-      console.log(this._currentTrack);
+      console.log(this._startTrack);
     }
   }
 

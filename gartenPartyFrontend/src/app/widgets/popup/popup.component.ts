@@ -9,27 +9,41 @@ export class PopupComponent implements OnInit {
 
   @Output() bShowChange = new EventEmitter();
 
-  @Input()
-  public bShow;
+  @Output() generateBodyFunctionCall = new EventEmitter();
 
   @Input()
-  public header;
+  public bShow: boolean;
 
   @Input()
-  public body;
+  public header: string;
 
   @Input()
-  public footer;
+  public innerHtml: string;
 
-  constructor() { }
+  @Input()
+  public footer: string;
+
+  @Input()
+  public checkGenerateBody = false;
+
+  @Input()
+  public generateBodyData = [];
+
+  bodyElementWasClicked(id): void {
+    this.generateBodyFunctionCall.emit([id]);
+  }
+
+  constructor() {
+  }
 
 
   ngOnInit() {
   }
 
-  closePopup(){
+  closePopup() {
     this.bShow = false;
     this.bShowChange.emit(this.bShow);
   }
+
 
 }

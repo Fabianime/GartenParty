@@ -10,10 +10,9 @@
         <img *ngIf="showLoading" src="assets/waitingGIF.gif">
         <app-img-gallery *ngIf="listOfVideosFromYouTube.length > 0" [data]="listOfVideosFromYouTube" [(selectedVideos)]="selectedVideos"></app-img-gallery>
       </div>
-      <app-popup [header]="popupHeader" [body]="popupBody" [footer]="popupFooter" [(bShow)]="bChange"></app-popup>
+      <app-popup [header]="popupHeader" [footer]="popupFooter" [(bShow)]="bChange" [checkGenerateBody]="true" [generateBodyData]="popupBodyData" (generateBodyFunctionCall)="deleteTrackFromNewOnes($event[0])"></app-popup>
     </div>
   </div>
+  <app-history [(selectedVideos)]="selectedVideos"></app-history>
+  <button (click)="addSelectedToList()">Save stuff</button>
 </section>
-
-<app-history [(selectedVideos)]="selectedVideos"></app-history>
-<button (click)="addSelectedToList()">Save stuff</button>

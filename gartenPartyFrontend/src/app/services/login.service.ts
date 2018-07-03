@@ -37,7 +37,7 @@ export class LoginService {
     for (let i = 0; i < strCookies.length; i++) {
       const cookie = strCookies[i];
       if (cookie.indexOf(cookieName) >= 0) {
-        returnValue = cookie.substring(cookieName.length + 1, cookie.length);
+        returnValue = cookie.split('=')[1];
       }
     }
     return returnValue;

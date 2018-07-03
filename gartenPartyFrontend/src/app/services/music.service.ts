@@ -15,8 +15,8 @@ export class MusicService {
     return this.http.get(this._endpointUrl + '/getPlayList/' + gartenPartyID);
   }
 
-  public getCurrentTrack(gartenPartyID: string): Observable<any> {
-    return this.http.get(this._endpointUrl + '/getCurrentTrack/' + gartenPartyID);
+  public getStartTrack(gartenPartyID: string): Observable<any> {
+    return this.http.get(this._endpointUrl + '/getStartTrack/' + gartenPartyID);
   }
 
   public setPlayList(gartenPartyID: string, listOfTracks): Observable<any> {
@@ -28,11 +28,11 @@ export class MusicService {
       }
     });
     listOfTracksString += ']';
-    return this.http.get (this._endpointUrl + '/setPlayList/' + gartenPartyID + '/' + encodeURIComponent(listOfTracksString));
+    return this.http.get(this._endpointUrl + '/setPlayList/' + gartenPartyID + '/' + encodeURIComponent(listOfTracksString));
   }
 
-  public setCurrentTrack(gartenPartyID: string, track: Object): Observable<any> {
-    return this.http.get(this._endpointUrl + '/setCurrentTrack/' + gartenPartyID + '/' + track);
+  public setStartTrack(gartenPartyID: string, track: Object): Observable<any> {
+    return this.http.get(this._endpointUrl + '/setStartTrack/' + gartenPartyID + '/' + track);
   }
 
 }

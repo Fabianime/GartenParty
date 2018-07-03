@@ -22,6 +22,7 @@ export class AddEntryComponent implements OnInit {
   public testf = document.cookie;
   public popupHeader = 'Header';
   public popupBody = '<p>Body</p>';
+  public popupBodyData = new Array({'value': '', 'id': 0});
   public popupFooter = 'Footer';
   public bChange = false;
   public showLoading = false;
@@ -106,9 +107,12 @@ export class AddEntryComponent implements OnInit {
         this.bChange = true;
         this.popupHeader = 'You added: ' + this.selectedVideos.length + ' videos';
         this.popupBody = '';
-        this.selectedVideos.forEach((selectedVideoData) => {
+        this.popupBodyData = [];
+        this.selectedVideos.forEach((selectedVideoData, index) => {
+
           this.popupBody += '<p style="color:black">' + selectedVideoData.name +
-            '<span class="deleteVideo" (click)="deleteVideoFromSelectedList(listPoint)"> &#10006;</span></p>';
+            '<span class="deleteVideo" (click)="this.closePopup(listPoint)"> &#10006;</span></p>';
+          this.popupBodyData.push({'value': selectedVideoData.name, 'id': index});
         });
         this.popupFooter = 'Footer';
 
@@ -168,6 +172,10 @@ export class AddEntryComponent implements OnInit {
         });
       }
     }, 1000);
+  }
+
+  public deleteTrackFromNewOnes(val) {
+    this.popupBodyData.splice(val, 1);
   }
 
 }
