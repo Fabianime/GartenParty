@@ -4,7 +4,7 @@
 
 <ul class="rightCorner rightCornerList" *ngIf="selectedVideos.length > 0 || undoList.length > 0" [ngClass]="{'fadeIn' : showSelectedView}">
     <li class="rightCornerListPoint arrowIcon">
-    <span class="listPointText">Selected Videos</span>
+    <span class="listPointHeadline">Selected Videos</span>
     <span class="closeList" (click)="toggleVideoSelectedView()">&#10006;</span>
     </li>
     <li class="arrowIcon undo" *ngIf="undoList.length > 0" (click)="undoDeleteFromSelectedList()">
