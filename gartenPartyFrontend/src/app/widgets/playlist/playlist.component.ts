@@ -19,7 +19,8 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
   public bError = false;
   public bLogin = false;
 
-  public mode = 'determinate';
+  public playlistImg: string;
+  public playlistDescription: string;
   public value = 100;
 
   public trackTimePalyed = '0:00';
@@ -49,6 +50,18 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
   }
 
   private getPlayList() {
+    // this is tmp
+    // AK'14 ! ➡ Walk of fame. Die Stars gehen – die Fans bleiben. Mit dem Zeugnis in den Händen werden Helden zu Legenden.
+    if (this._gartenPartyID === '1') {
+      this.playlistImg = 'https://target.scene7.com/is/image/Target/51223401?wid=520&amp;hei=520&amp;fmt=pjpeg';
+      this.playlistDescription = 'Please have mercy.';
+    } else {
+      this.playlistImg = 'assets/ak14.jpg';
+      this.playlistDescription = 'AK\'14 ! ➡ Walk of fame. Die Stars gehen – die Fans bleiben.' +
+        ' Mit dem Zeugnis in den Händen werden Helden zu Legenden.';
+    }
+    // tmp end
+
     this.musicService.getPlayList(this._gartenPartyID).subscribe((data) => {
       if (data.status === 200) {
         const strData = JSON.parse(data.response);
@@ -103,7 +116,7 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
       this.setTrackLength(this.playlist[this._startTrack.playlistPosition - 1].length);
       Observable.interval(200)
         .takeWhile(() => !this._checkPlayLength)
-        .subscribe( i => {
+        .subscribe(i => {
           const timeDifferenceInMilliseconds = Math.abs(new Date().getTime() - new Date(this._startTrack.start).getTime());
           const timeDifferenceAsDate = new Date(timeDifferenceInMilliseconds);
 

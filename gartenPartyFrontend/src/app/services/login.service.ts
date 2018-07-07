@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class LoginService {
@@ -8,7 +9,7 @@ export class LoginService {
   constructor(private http: HttpClient, ) {
   }
 
-  private _endpointUrl = 'https://just-bedarf.de:8888';
+  private _endpointUrl = environment.apiUrl;
 
   public setGartenPartyID(gartenPartyID) {
     this.createCookie('gartenPartyID', gartenPartyID, 1);

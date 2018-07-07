@@ -1,7 +1,8 @@
 <div class="background"></div>
 <section>
   <div class="album-info">
-    <div class="album-art"><img src="https://target.scene7.com/is/image/Target/51223401?wid=520&amp;hei=520&amp;fmt=pjpeg">
+    <div class="album-art">
+      <img src="{{playlistImg}}">
       <div class="actions">
         <div class="play" (click)="addEntryRedirect()">ADD Entry</div>
       </div>
@@ -11,7 +12,7 @@
       <span>
         <span></span>
       </span>
-      <p></p><!--Some randomt texts in the p -->
+      <p>{{playlistDescription}}</p><!--Some randomt texts in the p -->
     </div>
   </div>
   <div class="speakers"></div>
