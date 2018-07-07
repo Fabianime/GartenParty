@@ -4,9 +4,10 @@
  * Module dependencies.
  */
 
+var fs = require('fs');
 var app = require('../app');
 var debug = require('debug')('gartenpartybackend:server');
-var http = require('http');
+var https = require('https');
 
 /**
  * Get port from environment and store in Express.
@@ -18,8 +19,16 @@ app.set('port', port);
 /**
  * Create HTTP server.
  */
+//ssl credentials
+var privateKey = fs.readFileSync( 'ssl/privkey.pem' );
+var certificate = fs.readFileSync( 'ssl/fullchain.pem' );
 
-var server = http.createServer(app);
+var credentials = {
+  key: privateKey,
+  cert: certificate
+};
+
+var server = https.createServer(credentials, app);
 
 /**
  * Listen on provided port, on all network interfaces.

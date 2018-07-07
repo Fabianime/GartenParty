@@ -37,7 +37,7 @@ app.use(function (req, res, next) {
 
 
     // Website you wish to allow to connect
-    var allowedOrigins = ['http://127.0.0.1', 'http://localhost:4200', 'http://just-bedarf.de'];
+    var allowedOrigins = ['http://127.0.0.1', 'http://localhost:4200', 'https://just-bedarf.de'];
     var origin = req.headers.origin;
     if(allowedOrigins.indexOf(origin) > -1){
          res.setHeader('Access-Control-Allow-Origin', origin);
