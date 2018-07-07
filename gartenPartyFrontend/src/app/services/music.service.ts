@@ -8,7 +8,7 @@ export class MusicService {
   constructor(private http: HttpClient) {
   }
 
-  private _endpointUrl = 'http://just-bedarf.de:8888';
+  private _endpointUrl = 'https://just-bedarf.de:8888';
 
   public getPlayList(gartenPartyID: string): Observable<any> {
     return this.http.get(this._endpointUrl + '/getPlayList/' + gartenPartyID);

@@ -8,7 +8,7 @@ export class LoginService {
   constructor(private http: HttpClient, ) {
   }
 
-  private _endpointUrl = 'http://just-bedarf.de:8888';
+  private _endpointUrl = 'https://just-bedarf.de:8888';
 
   public setGartenPartyID(gartenPartyID) {
     this.createCookie('gartenPartyID', gartenPartyID, 1);
