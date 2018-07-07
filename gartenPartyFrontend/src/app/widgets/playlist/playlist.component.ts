@@ -132,7 +132,7 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
   private setTrackLength(trackLength) {
     this.trackLength = trackLength;
     const trackLengthSplited = this.trackLength.split(':');
-    this.trackLengthMs = parseInt(trackLengthSplited[0]) * 60000 + parseInt(trackLengthSplited[1]) * 1000;
+    this.trackLengthMs = parseInt(trackLengthSplited[0], 10) * 60000 + parseInt(trackLengthSplited[1], 10) * 1000;
   }
 
   private checkLogin() {

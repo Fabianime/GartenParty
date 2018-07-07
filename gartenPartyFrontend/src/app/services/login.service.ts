@@ -8,8 +8,7 @@ export class LoginService {
   constructor(private http: HttpClient, ) {
   }
 
-  private url = location.href.substr(location.href.search('//') + 2, location.href.substr(location.href.search('//') + 2).search(':'));
-  private _endpointUrl = 'http://' + this.url + ':8888';
+  private _endpointUrl = 'http://just-bedarf.de:8888';
 
   public setGartenPartyID(gartenPartyID) {
     this.createCookie('gartenPartyID', gartenPartyID, 1);
