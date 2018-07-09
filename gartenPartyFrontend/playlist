@@ -20,7 +20,7 @@ server {
 
 }
 server {
-    if ($host = just-bedarf.de) {
+    if ($host = just-bedarf.de || $host = www.just-bedarf.de) {
         return 301 https://$host$request_uri;
     } # managed by Certbot
 
