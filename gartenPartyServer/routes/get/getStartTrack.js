@@ -1,26 +1,29 @@
-var express = require('express');
-var router = express.Router();
-var fs = require('fs');
-const path = require('path');
+var express			=		require("express");
+var bodyParser		=		require("body-parser");
+var app				=		express();
+var fs 				=		require('fs');
+const path			=		require('path');
+//Here we are configuring express to use body-parser as middle-ware.
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-/* GET startTrack listing. */
-router.get('/:gartenPartyID', function(req, res, next) {
-	var gartenPartyID = req.params.gartenPartyID;
-	try{
-		var startTrack = fs.readFileSync(path.resolve("startTrack", gartenPartyID + '.json'), "UTF-8");
-	}
-	catch(err){
-		res.send(JSON.stringify({"status": 500, "error": err, "response": null})); 
-	}
+/* GET home page. */
+app.post('',function(request,response){
+	var playlistID=request.body.playlistID;
+	var startTrackPath = path.resolve("startTrack", playlistID + '.json');
 
-	if(startTrack == ""){
-		res.send(JSON.stringify({"status": 500, "error": "No Track Playing for this list.", "response": ""})); 
+	if (fs.existsSync(startTrackPath)) {
+		var startTrack = fs.readFileSync(startTrackPath, "UTF-8");
+	}
+	if(startTrack === undefined){
+		response.status(500);
+		response.send(JSON.stringify({"status": 500, "error": "No Track Playing for this list.", "response": ""})); 
 		//If there is error, we send the error in the error section with 500 status
 	} else {
-		res.send(JSON.stringify({"status": 200, "error": null, "response": startTrack}));
+		response.status(200);
+		response.send(JSON.stringify({"status": 200, "error": null, "response": startTrack}));
 		//If there is no error, all is good and response is 200OK.
 	}
 });
 
-
-module.exports = router;
+module.exports = app;

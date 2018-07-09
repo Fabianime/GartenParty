@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import { environment } from '../../environments/environment';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class MusicService {
@@ -12,27 +12,24 @@ export class MusicService {
   private _endpointUrl = environment.apiUrl;
 
   public getPlayList(gartenPartyID: string): Observable<any> {
-    return this.http.get(this._endpointUrl + '/getPlayList/' + gartenPartyID);
+    return this.http.post(this._endpointUrl + '/getPlayList', {'playlistID': gartenPartyID});
+    // return this.http.get(this._endpointUrl + '/getPlayList/' + gartenPartyID);
   }
 
   public getStartTrack(gartenPartyID: string): Observable<any> {
-    return this.http.get(this._endpointUrl + '/getStartTrack/' + gartenPartyID);
+    return this.http.post(this._endpointUrl + '/getStartTrack', {'playlistID': gartenPartyID});
   }
 
   public setPlayList(gartenPartyID: string, listOfTracks): Observable<any> {
-    let listOfTracksString = '[';
-    listOfTracks.forEach((track, i) => {
-      listOfTracksString += JSON.stringify(track);
-      if (i !== listOfTracks.length - 1) {
-        listOfTracksString += ',';
-      }
-    });
-    listOfTracksString += ']';
-    return this.http.get(this._endpointUrl + '/setPlayList/' + gartenPartyID + '/' + encodeURIComponent(listOfTracksString));
+    return this.http.post(this._endpointUrl + '/setPlayList', {'playlistID': gartenPartyID, 'playlistData': listOfTracks});
   }
 
-  public setStartTrack(gartenPartyID: string, track: Object): Observable<any> {
-    return this.http.get(this._endpointUrl + '/setStartTrack/' + gartenPartyID + '/' + track);
+  public setStartTrack(gartenPartyID: string, startTrackPosition: string): Observable<any> {
+    return this.http.post(this._endpointUrl + '/setStartTrack', {'': gartenPartyID, 'startTrackPosition': startTrackPosition});
+  }
+
+  public deleteTrack(playlistID: string, videoUrlToDelete: string): Observable<any> {
+    return this.http.post(this._endpointUrl + '/deleteTrack', {'playlistID': playlistID, 'videoUrlToDelete': videoUrlToDelete});
   }
 
 }

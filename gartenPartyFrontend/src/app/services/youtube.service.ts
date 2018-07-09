@@ -10,14 +10,16 @@ export class YoutubeService {
 
   private _endpointUrl = 'https://www.googleapis.com/youtube/v3/';
 
-  public getSearchResult(searchValue: string): Observable<any> {
+  public getSearchResult(searchValue: string, nextPageToken?: string): Observable<any> {
+    console.log(nextPageToken);
     const key = '?key=AIzaSyDEL2h-pxbQjnymytTP5jqB58mKgfV9eQk';
     const part = '&part=snippet';
     const maxResults = '&maxResults=25';
+    const pageToken = nextPageToken === undefined ?  '' : '&pageToken=' + nextPageToken;
     const type = '&type=video';
     const q = '&q=' + searchValue;
 
-    return this.http.get(this._endpointUrl + 'search/' + key + part + maxResults + type + q);
+    return this.http.get(this._endpointUrl + 'search/' + key + part + maxResults + pageToken + type + q);
   }
 
   public getContentDetailsOfTrack(videoId: string): Observable<any> {
