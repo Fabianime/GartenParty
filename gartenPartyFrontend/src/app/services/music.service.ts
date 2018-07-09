@@ -12,7 +12,8 @@ export class MusicService {
   private _endpointUrl = environment.apiUrl;
 
   public getPlayList(gartenPartyID: string): Observable<any> {
-    return this.http.get(this._endpointUrl + '/getPlayList/' + gartenPartyID);
+    return this.http.post(this._endpointUrl + '/getPlayList/', {'playlistID' : gartenPartyID});
+    // return this.http.get(this._endpointUrl + '/getPlayList/' + gartenPartyID);
   }
 
   public getStartTrack(gartenPartyID: string): Observable<any> {
