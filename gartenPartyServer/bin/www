@@ -8,6 +8,7 @@ var fs = require('fs');
 var app = require('../app');
 var debug = require('debug')('gartenpartybackend:server');
 var https = require('https');
+var http = require('http');
 
 /**
  * Get port from environment and store in Express.
@@ -29,6 +30,7 @@ var credentials = {
 };
 
 var server = https.createServer(credentials, app);
+var server = http.createServer(app);
 
 /**
  * Listen on provided port, on all network interfaces.
