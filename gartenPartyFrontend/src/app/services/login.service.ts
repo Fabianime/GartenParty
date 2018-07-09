@@ -1,12 +1,12 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import { environment } from '../../environments/environment';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class LoginService {
 
-  constructor(private http: HttpClient, ) {
+  constructor(private http: HttpClient) {
   }
 
   private _endpointUrl = environment.apiUrl;
@@ -27,7 +27,7 @@ export class LoginService {
   }
 
   public checkGartenPartyID(): Observable<any> {
-    return this.http.get(this._endpointUrl + '/checkPartys/' + this.getGartenPartyID());
+    return this.http.post(this._endpointUrl + '/checkPlaylist', {'playlistID' : this.getGartenPartyID()});
   }
 
   public getGartenPartyID() {

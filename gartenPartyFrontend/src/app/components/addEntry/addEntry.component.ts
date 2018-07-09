@@ -28,6 +28,11 @@ export class AddEntryComponent implements OnInit {
   public showLoading = false;
 
   private _searchString;
+  private _gartenPartyID = this.loginService.getGartenPartyID();
+  private _playlist = [];
+  private _nextPageToken: string;
+  private _listOfVideosFromYouTubeOverload = [];
+  private _oldSelectedVideos = [];
 
   public selectedVideos = [];
   public listOfVideosFromYouTube = [];
@@ -42,6 +47,7 @@ export class AddEntryComponent implements OnInit {
 
   ngOnInit() {
     this.checkLogin();
+    this._getPlayList();
   }
 
   set searchString(val) {
@@ -49,8 +55,11 @@ export class AddEntryComponent implements OnInit {
     this.searchStringChange.emit(this._searchString);
     this.showLoading = true;
     this.listOfVideosFromYouTube = [];
-
-    this._searchInYoutube(val);
+    setTimeout(() => {
+      if (this._searchString === val) {
+        this._searchInYoutube();
+      }
+    }, 1000);
   }
 
   public getAutoComplete(searchValue: string): Observable<any> {
@@ -93,7 +102,6 @@ export class AddEntryComponent implements OnInit {
         listOfTracksToAdd.push(tmp);
         // TODO: muss noch zu bulk upload oder so
         if (listOfTracksToAdd.length === this.selectedVideos.length) {
-          console.log(listOfTracksToAdd);
           this.addTracksToPlayList(listOfTracksToAdd);
         }
       });
@@ -116,6 +124,7 @@ export class AddEntryComponent implements OnInit {
         });
         this.popupFooter = 'Footer';
 
+        this._oldSelectedVideos = this.selectedVideos;
         this.selectedVideos = [];
         this.listOfVideosFromYouTube = [];
         this._searchString = '';
@@ -155,27 +164,67 @@ export class AddEntryComponent implements OnInit {
     }
   }
 
-  private _searchInYoutube(val) {
-    setTimeout(() => {
-      if (val === this._searchString) {
-        this.youtubeService.getSearchResult(this._searchString).subscribe((data) => {
-          this.showLoading = false;
-          data.items.forEach((element) => {
-            const tmp = {
-              'title': (element.snippet.title.length > 55 ? element.snippet.title.substring(0, 52) + '...' : element.snippet.title),
-              'thumbnail': element.snippet.thumbnails.medium,
-              'description': element.snippet.description,
-              'link': 'https://www.youtube.com/watch?v=' + element.id.videoId
-            };
+  private _searchInYoutube(nextPageToken?: string) {
+    this.youtubeService.getSearchResult(this._searchString, nextPageToken).subscribe((data) => {
+      this._nextPageToken = data.nextPageToken;
+      this.showLoading = false;
+      data.items.forEach((element) => {
+        const tmp = {
+          'title': (element.snippet.title.length > 55 ? element.snippet.title.substring(0, 52) + '...' : element.snippet.title),
+          'thumbnail': element.snippet.thumbnails.medium,
+          'description': element.snippet.description,
+          'link': 'https://www.youtube.com/watch?v=' + element.id.videoId
+        };
+        if (!this._checkIfVideoAlreadyInPlaylist(tmp.link)) {
+          if (this.listOfVideosFromYouTube.length >= 25) {
             this.listOfVideosFromYouTube.push(tmp);
-          });
-        });
+          } else {
+            this._listOfVideosFromYouTubeOverload.push(tmp);
+          }
+        }
+      });
+      this._listOfVideosFromYouTubeOverload.forEach((videoData) => {
+        if (this.listOfVideosFromYouTube.length < 25) {
+          this.listOfVideosFromYouTube.push(videoData);
+          this._listOfVideosFromYouTubeOverload.splice(0, 1);
+        }
+      });
+      if (this.listOfVideosFromYouTube.length < 20) {
+        this._searchInYoutube(this._nextPageToken);
       }
-    }, 1000);
+    });
   }
 
-  public deleteTrackFromNewOnes(val) {
-    this.popupBodyData.splice(val, 1);
+  private _checkIfVideoAlreadyInPlaylist(videoUrlToCheck: string) {
+    let videoInPlaylist = false;
+    this._playlist.forEach((playlistData) => {
+      if (playlistData.url === videoUrlToCheck) {
+        videoInPlaylist = true;
+      }
+    });
+    return videoInPlaylist;
+  }
+
+  private _getPlayList() {
+    this.musicService.getPlayList(this._gartenPartyID).subscribe((data) => {
+      const strData = JSON.parse(data.response);
+      this._playlist = strData.playlist;
+    });
+  }
+
+  public deleteTrack(val: number) {
+    this.popupBodyData.forEach((videoData, index) => {
+      if (videoData.id === val) {
+        this.popupBodyData.splice(index, 1);
+      }
+    });
+    this.musicService.deleteTrack(this._gartenPartyID, this._oldSelectedVideos[val].link).subscribe((data) => {
+      if (data.status === 200) {
+        // ToDo: do something mabe?
+      } else {
+        // ToDo: log error
+      }
+    });
   }
 
 }

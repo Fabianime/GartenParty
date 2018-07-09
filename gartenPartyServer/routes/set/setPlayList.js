@@ -1,73 +1,62 @@
-var express = require('express');
-var router = express.Router();
-var fs = require('fs');
-const path = require('path');
+var express			=		require("express");
+var bodyParser		=		require("body-parser");
+var app				=		express();
+var fs 				=		require('fs');
+const path			=		require('path');
+//Here we are configuring express to use body-parser as middle-ware.
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 /* GET home page. */
-router.get('/:gartenPartyID/:aTitles', function(req, res, next) {
-	const gartenPartyID = req.params.gartenPartyID;
-	var aTitles = req.params.aTitles;
+app.post('',function(request,response){
+	const playlistID = request.body.playlistID;
+	var playlistData = request.body.playlistData;
 
-	const sFilePath = path.resolve("./playlists/", gartenPartyID + '.json');
-
-	var bError = false;
-	var sError = "";
+	const playlistPath = path.resolve("./playlists/", playlistID + '.json');
+	var checkError = false;
+	var errorMessage = "";
 	var playList = {};
-
-	try{
-		aTitles = JSON.parse('' + aTitles);
-	}catch(e){
-		bError = true;
-		sError = "Second Argument is not an Array";
-		console.log(e);
-	}
 	
-	if(!bError){	
-		fs.open('myfile', 'r', (err, fd) => {
-			if (err) {
-				if (err.code === 'ENOENT') {
-					playList = fs.readFileSync(sFilePath, "UTF-8");
-				}else{
-					sError = err;
-					bError = true;
-				}
+	fs.open('myfile', 'r', (err, fd) => {
+		if (err) {
+			if (err.code === 'ENOENT') {
+				playList = fs.readFileSync(playlistPath, "UTF-8");
+			}else{
+				errorMessage = err;
+				checkError = true;
 			}
-			if(!bError){
-				try{
-					playList = JSON.parse(playList);
-				}catch(e){
-					bError = true;
-					sError = "Playlist is broken. Please Contact an Admin."
-					console.log(e);
-				}
-				if(!bError){
-					console.log(aTitles);
-					for(let i = 0; i < aTitles.length; i++){
-						playList.playlist.push(aTitles[i]);
-					}
-
-					fs.writeFile(sFilePath, JSON.stringify(playList), (err) => {
-					  if (err) {
-					  	sError = err;
-					  	bError = true;
-					  }
-					});
-				}
+		}
+		if(!checkError){
+			try{
+				playList = JSON.parse(playList);
+			}catch(e){
+				checkError = true;
+				errorMessage = "Playlist is broken. Please Contact an Admin."
 			}
-
-			if(bError === true){
-				res.send(JSON.stringify({"status": 500, "error": sError, "response": null})); 
-				//If there is error, we send the error in the error section with 500 status
-			} else {
-				console.log('playList:' + playList);
-				res.send(JSON.stringify({"status": 200, "error": null, "response": JSON.stringify(playList)}));
-				//If there is no error, all is good and response is 200OK.
+			if(!checkError){
+				for(let i = 0; i < playlistData.length; i++){
+					playList.playlist.push(playlistData[i]);
+				}
+				fs.writeFile(playlistPath, JSON.stringify(playList), (err) => {
+				  if (err) {
+				  	errorMessage = err;
+				  	checkError = true;
+				  }
+				});
 			}
+		}
 
-		});
-	}else{
-		res.send(JSON.stringify({"status": 500, "error": sError, "response": null})); 
-	}
+		if(checkError === true){
+			response.status(500);
+			response.send(JSON.stringify({"status": 500, "error": errorMessage, "response": null})); 
+			//If there is error, we send the error in the error section with 500 status
+		} else {
+			response.status(200);
+			response.send(JSON.stringify({"status": 200, "error": null, "response": JSON.stringify(playList)}));
+			//If there is no error, all is good and response is 200OK.
+		}
+
+	});
 });
 
-module.exports = router;
+module.exports = app;

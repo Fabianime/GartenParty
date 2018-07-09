@@ -15,8 +15,10 @@ var setPlayList = require('./routes/set/setPlayList');
 var setStartTrack = require('./routes/set/setStartTrack');
 
 //check
-var checkPartys = require('./routes/check/checkPartys');
+var checkPlaylist = require('./routes/check/checkPlaylist');
 
+//delete
+var deleteTrack = require('./routes/delete/deleteTrack');
 
 var app = express();
 
@@ -65,7 +67,10 @@ app.use('/setPlayList', setPlayList);
 app.use('/setStartTrack', setStartTrack);
 
 //check
-app.use('/checkPartys', checkPartys);
+app.use('/checkPlaylist', checkPlaylist);
+
+//delete
+app.use('/deleteTrack', deleteTrack);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
