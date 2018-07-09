@@ -1,7 +1,7 @@
 server {
   listen       80;
   server_name  just-bedarf.de;
-  return       301 https://www.just-bedarf.de$request_uri;
+  return       301 http://www.just-bedarf.de$request_uri;
 }
 
 server {
