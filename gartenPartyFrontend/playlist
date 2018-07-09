@@ -1,11 +1,4 @@
 server {
-  listen       80;
-  server_name  www.just-bedarf.de;
-  return       301 https://just-bedarf.de$request_uri;
-}
-
-server {
-  listen       80;
   server_name  just-bedarf.de;
   
   access_log  /var/log/just-bedarf.de/nginx.access.log;
@@ -18,4 +11,23 @@ server {
     index  index.html index.htm;
     try_files $uri $uri/ /index.html;
   }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/just-bedarf.de/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/just-bedarf.de/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = just-bedarf.de) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+  listen       80;
+  server_name  just-bedarf.de;
+    return 404; # managed by Certbot
+
+
 }
