@@ -1,6 +1,12 @@
 server {
   listen       80;
   server_name  just-bedarf.de;
+  return       301 https://www.just-bedarf.de$request_uri;
+}
+
+server {
+  listen       80;
+  server_name  www.just-bedarf.de;
   
   access_log  /var/log/just-bedarf.de/nginx.access.log;
   error_log   /var/log/just-bedarf.de/nginx.error.log;
