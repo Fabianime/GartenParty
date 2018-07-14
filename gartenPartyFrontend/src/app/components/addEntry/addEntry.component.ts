@@ -222,7 +222,11 @@ export class AddEntryComponent implements OnInit {
   private _getPlayList() {
     this.musicService.getPlayList(this._gartenPartyID).subscribe((data) => {
       const strData = JSON.parse(data.response);
-      this._playlist = strData.playlist;
+      if (strData.playlist === undefined) {
+        this._playlist = [];
+      } else {
+        this._playlist = strData.playlist;
+      }
     });
   }
 
