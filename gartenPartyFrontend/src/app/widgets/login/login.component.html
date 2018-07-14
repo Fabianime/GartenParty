@@ -1,14 +1,10 @@
 <div class="background"></div>
 <section>
-  <div class="album-info">
-    <div class="album-details">
-      <h1>Please Login</h1>
-      <p>Enter the Code you got From the Playlist Owner</p>
-      <input type="text" class="display-elements" [(value)]="gartenPartyId" [(ngModel)]="gartenPartyId" (keydown.enter)="checkLogin()">
-      <input type="button" class="display-elements" value="Login" (click)="checkLogin()">
-      <div class="display-elements alert-danger" *ngIf="loginInvalide">
-        <strong>Login Error!</strong> If your Code doesn't work, just wait a few minutes or contact the Playlist owner.
-      </div>
-    </div>
+  <h1>Please Login</h1>
+  <p class="loginText">Enter the Code you got From the Playlist Owner</p>
+  <input type="text" class="display-elements" [(value)]="gartenPartyId" [(ngModel)]="gartenPartyId" (keydown.enter)="checkLogin()">
+  <input type="button" class="display-elements" value="Login" (click)="checkLogin()">
+  <div class="display-elements alert-danger" *ngIf="loginInvalide">
+    <strong>Login Error!</strong> If your Code doesn't work, just wait a few minutes or contact the Playlist owner.
   </div>
 </section>

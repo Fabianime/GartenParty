@@ -1,17 +1,19 @@
-<div class="rightCorner listView" *ngIf="selectedVideos.length > 0 || undoList.length > 0"  (click)="toggleVideoSelectedView()" [ngClass]="{'fadeIn' : !showSelectedView}">
-    <p class="listViewText"><span class="arrowIcon">&#171;</span> {{selectedVideos.length}}</p>
+<div class="rightCorner listView" *ngIf="selectedVideos.length > 0 || undoList.length > 0"
+     (click)="toggleVideoSelectedView()" [ngClass]="{'displayList' : !showSelectedView}">
+  <p class="listViewText"><span class="arrowIcon">&#171;</span> {{selectedVideos.length}}</p>
 </div>
 
-<ul class="rightCorner rightCornerList" *ngIf="selectedVideos.length > 0 || undoList.length > 0" [ngClass]="{'fadeIn' : showSelectedView}">
-    <li class="rightCornerListPoint arrowIcon">
+<ul class="rightCorner rightCornerList" *ngIf="selectedVideos.length > 0 || undoList.length > 0"
+    [ngClass]="{'displayList fadeIn' : showSelectedView}">
+  <li class="rightCornerListPoint arrowIcon rightCornerFixedHead">
     <span class="listPointHeadline">Selected Videos</span>
-    <span class="closeList" (click)="toggleVideoSelectedView()">&#10006;</span>
-    </li>
-    <li class="arrowIcon undo" *ngIf="undoList.length > 0" (click)="undoDeleteFromSelectedList()">
-    Undo &#x21B6;
-    </li>
-    <li class="rightCornerListPoint" *ngFor="let listPoint of selectedVideos">
+    <span class="closeList" (click)="toggleVideoSelectedView()">&#10006;</span><br>
+    <span class="arrowIcon hideUndo" [ngClass]="{'showUndo' : undoList.length > 0}"
+          (click)="undoDeleteFromSelectedList()">Undo &#x21B6;</span>
+  </li>
+  <li class="rightCornerListPoint" *ngFor="let listPoint of selectedVideos"
+      [ngClass]="{'bufferForUndo' : undoList.length > 0}">
     <span class="listPointText">{{listPoint.name}}&nbsp;&nbsp;&nbsp;</span>
     <span class="deleteVideo" (click)="deleteVideoFromSelectedList(listPoint)"> &#10006;</span>
-    </li>
+  </li>
 </ul>

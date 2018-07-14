@@ -4,15 +4,35 @@
   <div class="album-info">
     <div class="album-details">
 
-      <div style="width: 100%" (click)="test()" class="youtube"><h3>Youtube</h3></div>
-      <div class="element" [ngClass]="{'fadeIn' : bTest}">
-        <input [(ngModel)]="searchString"><br>
-        <img *ngIf="showLoading" src="assets/waitingGIF.gif">
-        <app-img-gallery *ngIf="listOfVideosFromYouTube.length > 0" [data]="listOfVideosFromYouTube" [(selectedVideos)]="selectedVideos"></app-img-gallery>
+      <div>
+        <div class="logo active" [ngClass]="{'selectedSearchEngine' : youtubeIsSelected}">
+          <img (click)="loadYoutube()" class="youtube" src="assets/youtube_logo.png">
+        </div>
+
+        <div class="logo disabled">
+          <img class="spotify" src="assets/spotify_logo.png">
+        </div>
+
+        <div class="logo disabled">
+          <img class="soundcloud" src="assets/soundcloud_logo.png">
+        </div>
+        <br><input type="text" placeholder="Input your desired music title..." class="display-elements searchBar"
+                   [(ngModel)]="searchString" [ngClass]="{'fadeIn' : showResults}">
       </div>
-      <app-popup [header]="popupHeader" [footer]="popupFooter" [(bShow)]="bChange" [checkGenerateBody]="true" [generateBodyData]="popupBodyData" (generateBodyFunctionCall)="deleteTrack($event[0])"></app-popup>
+
+      <div class="imgContainer" [ngClass]="{'fadeIn' : showResults}">
+        <div [ngClass]="{'spinnerDisplay' : spinnerDisplay}">
+          <div class="spinnerCss" [ngClass]="{ 'spinnerDisplay' : spinnerDisplay}">
+          </div>
+        </div>
+        <app-img-gallery *ngIf="listOfVideosFromYouTube.length > 0" [data]="listOfVideosFromYouTube"
+                         [(selectedVideos)]="selectedVideos"></app-img-gallery>
+      </div>
+      <app-popup [header]="popupHeader" [footer]="popupFooter" [(bShow)]="bChange" [checkGenerateBody]="true"
+                 [generateBodyData]="popupBodyData" (generateBodyFunctionCall)="deleteTrack($event[0])"></app-popup>
     </div>
   </div>
   <app-history [(selectedVideos)]="selectedVideos"></app-history>
-  <button (click)="addSelectedToList()">Save stuff</button>
+  <input type="button" class="saveButton display-elements leftCorner" [ngClass]="{'fadeIn' : selectedVideos.length > 0}"
+         (click)="addSelectedToList()" value="Save">
 </section>

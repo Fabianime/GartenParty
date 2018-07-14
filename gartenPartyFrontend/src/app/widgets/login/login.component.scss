@@ -1,78 +1,19 @@
-@import '../../_vars';
-
-.background {
-  + section {
-    margin-top: 20vmin;
-    background: transparent;
-  }
-}
-
-section {
-  background: #fafafa;
-  margin: 100px 56px;
-  padding: 20px 56px;
-  color: var(--darker);
-  color: rgba(white, .8);
-
-  .album-details {
-    > * {
-      padding: 10px 0;
-    }
-  }
-
-  h1 {
-    font-size: 50px;
-    font-weight: 300;
-    word-wrap: break-word;
-    @media(max-width: 550px) {
-      font-size: 40px;
-      font-weight: 300;
-    }
-  }
-  p {
-    margin-top: 15px;
-  }
-
-  @media(max-width: 700px) {
-    .album-details {
-      // display: inline-block;
-      padding: 10px;
-      float: left;
-      max-width: 100%;
-    }
-  }
-
-  @media(max-width: 550px) {
-    margin: 100px 20px 20px 20px;
-    padding: 20px 16px;
-  }
-}
-
-.display-elements {
-  width: 50%;
-  padding: 12px 20px;
-  margin: 5px 0;
-  border: none;
-  border-radius: 4px;
-  @media(max-width: 550px) {
-    width: 100%;
-  }
-}
-
-input[type=text], select {
-  display: inline-block;
-  box-sizing: border-box;
-}
-
-input[type=button] {
-  background-color: #144463;
-  color: white;
-  cursor: pointer;
-}
+@import '../../_default';
 
 .alert-danger {
   color: #d82320;
   background-color: #f2dede;
   text-align: center;
   margin: 15px 0;
+}
+
+.loginText {
+  font-size: larger;
+  @media(max-width: 420px) {
+    font-size: unset;
+  }
+}
+
+h1 {
+  margin: 0;
 }

@@ -1,4 +1,5 @@
-<div class="responsive" *ngFor="let element of data;let i = index" [attr.data-index]="i" (click)="toggleSelectedVideo(i)">
+<div class="responsive" *ngFor="let element of data;let i = index" [attr.data-index]="i"
+     (click)="toggleSelectedVideo(i)">
   <div class="gallery" [ngClass]="{'selectedVideo' : checkIfVideoSelected(i)}">
     <img [src]="element.thumbnail.url">
     <!-- <a target="_blank" [href]="element.link"></a> -->

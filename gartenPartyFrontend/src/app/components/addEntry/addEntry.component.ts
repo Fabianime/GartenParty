@@ -19,13 +19,13 @@ export class AddEntryComponent implements OnInit {
               private youtubeService: YoutubeService) {
   }
 
-  public testf = document.cookie;
   public popupHeader = 'Header';
   public popupBody = '<p>Body</p>';
   public popupBodyData = new Array({'value': '', 'id': 0});
   public popupFooter = 'Footer';
   public bChange = false;
   public showLoading = false;
+  public youtubeIsSelected = false;
 
   private _searchString;
   private _gartenPartyID = this.loginService.getGartenPartyID();
@@ -36,7 +36,10 @@ export class AddEntryComponent implements OnInit {
 
   public selectedVideos = [];
   public listOfVideosFromYouTube = [];
-  public bTest = false;
+  public showResults = false;
+  public fadeIn = false;
+  public fadeOut = false;
+  public spinnerDisplay = false;
 
   @Output() searchStringChange = new EventEmitter();
 
@@ -45,21 +48,26 @@ export class AddEntryComponent implements OnInit {
     return this._searchString;
   }
 
-  ngOnInit() {
-    this.checkLogin();
-    this._getPlayList();
-  }
-
   set searchString(val) {
     this._searchString = val;
     this.searchStringChange.emit(this._searchString);
-    this.showLoading = true;
+    this.spinnerDisplay = true;
     this.listOfVideosFromYouTube = [];
-    setTimeout(() => {
-      if (this._searchString === val) {
-        this._searchInYoutube();
-      }
-    }, 1000);
+    if (this._searchString.length) {
+      setTimeout(() => {
+        if (this._searchString === val) {
+          this._searchInYoutube();
+        }
+      }, 1000);
+    } else {
+      this.listOfVideosFromYouTube = [];
+      this.spinnerDisplay = false;
+    }
+  }
+
+  ngOnInit() {
+    this.checkLogin();
+    this._getPlayList();
   }
 
   public getAutoComplete(searchValue: string): Observable<any> {
@@ -67,8 +75,14 @@ export class AddEntryComponent implements OnInit {
     return this.http.get('http://suggestqueries.google.com/complete/search?client=firefox&ds=ytk&q=' + searchValue);
   }
 
-  public test() {
-    this.bTest = !this.bTest;
+  public loadYoutube() {
+    this.showResults = !this.showResults;
+    this.youtubeIsSelected = !this.youtubeIsSelected;
+    this.listOfVideosFromYouTube = [];
+    console.log(this._searchString !== '');
+    if (this._searchString !== undefined && this._searchString !== '') {
+      this._searchInYoutube();
+    }
   }
 
   private checkLogin() {
@@ -167,7 +181,7 @@ export class AddEntryComponent implements OnInit {
   private _searchInYoutube(nextPageToken?: string) {
     this.youtubeService.getSearchResult(this._searchString, nextPageToken).subscribe((data) => {
       this._nextPageToken = data.nextPageToken;
-      this.showLoading = false;
+      this.spinnerDisplay = false;
       data.items.forEach((element) => {
         const tmp = {
           'title': (element.snippet.title.length > 55 ? element.snippet.title.substring(0, 52) + '...' : element.snippet.title),
@@ -228,3 +242,4 @@ export class AddEntryComponent implements OnInit {
   }
 
 }
+

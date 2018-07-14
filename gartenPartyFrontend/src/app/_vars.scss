@@ -1,15 +1,3 @@
 //gloabal vars
-$evia-color: #144463;
-
-.background {
-  width: 100.1%;
-  height: 56.25vw;
-  background: url(assets/retroArt.jpg) center/cover;
-  box-shadow: inset 0px -17vw 20vw 1vw #0a1a24;
-  position: absolute;
-  top: 0;
-  z-index: -1;
-  margin-top: -10px;
-  margin-left: -10px;
-}
-
+$standard: #144463;
+$white: #ececec;
