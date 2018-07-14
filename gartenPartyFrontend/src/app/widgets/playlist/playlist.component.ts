@@ -52,13 +52,16 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
   private getPlayList() {
     // this is tmp
     // AK'14 ! ➡ Walk of fame. Die Stars gehen – die Fans bleiben. Mit dem Zeugnis in den Händen werden Helden zu Legenden.
-    if (this._gartenPartyID === '1') {
-      this.playlistImg = 'https://target.scene7.com/is/image/Target/51223401?wid=520&amp;hei=520&amp;fmt=pjpeg';
-      this.playlistDescription = 'Please have mercy.';
-    } else {
+    if (this._gartenPartyID === '839') {
+      this.playlistImg = 'assets/839.jpg';
+      this.playlistDescription = 'Beim Fehlern meldet euch bei mir(Fabi)';
+    } else if (this._gartenPartyID === 'AK14') {
       this.playlistImg = 'assets/ak14.jpg';
       this.playlistDescription = 'AK\'14 ! ➡ Walk of fame. Die Stars gehen – die Fans bleiben.' +
         ' Mit dem Zeugnis in den Händen werden Helden zu Legenden.';
+    } else {
+      this.playlistImg = 'https://target.scene7.com/is/image/Target/51223401?wid=520&amp;hei=520&amp;fmt=pjpeg';
+      this.playlistDescription = 'Please have mercy.';
     }
     // tmp end
 

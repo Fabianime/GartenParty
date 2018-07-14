@@ -7,7 +7,9 @@ import {LoginService} from '../../services/login.service';
   styleUrls: ['./start.component.scss']
 })
 export class StartComponent implements OnInit {
-  public bLogin = false;
+
+  public showLogin = false;
+  public showPlaylist = false;
 
   constructor(private loginService: LoginService) {
   }
@@ -19,7 +21,8 @@ export class StartComponent implements OnInit {
   private checkLogin() {
     this.loginService.checkGartenPartyID().subscribe((data) => {
       if (data.status === 200) {
-        this.bLogin = data.response;
+        this.showLogin = !data.response;
+        this.showPlaylist = data.response;
       } else {
         throw data.error;
         // toDO: return False + logs mit fehler schreiben

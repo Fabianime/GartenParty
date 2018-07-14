@@ -11,7 +11,6 @@ import {YoutubeService} from '../../services/youtube.service';
   styleUrls: ['./addEntry.component.scss']
 })
 export class AddEntryComponent implements OnInit {
-  public bLogin;
 
   constructor(private loginService: LoginService,
               private http: HttpClient,
@@ -26,6 +25,8 @@ export class AddEntryComponent implements OnInit {
   public bChange = false;
   public showLoading = false;
   public youtubeIsSelected = false;
+  public showLogin = false;
+  public showAddEntry = false;
 
   private _searchString;
   private _gartenPartyID = this.loginService.getGartenPartyID();
@@ -37,8 +38,6 @@ export class AddEntryComponent implements OnInit {
   public selectedVideos = [];
   public listOfVideosFromYouTube = [];
   public showResults = false;
-  public fadeIn = false;
-  public fadeOut = false;
   public spinnerDisplay = false;
 
   @Output() searchStringChange = new EventEmitter();
@@ -89,7 +88,8 @@ export class AddEntryComponent implements OnInit {
     // todo: auslagern nach login service
     this.loginService.checkGartenPartyID().subscribe((data) => {
       if (data.status === 200) {
-        this.bLogin = data.response;
+        this.showLogin = !data.response;
+        this.showAddEntry = data.response;
       } else {
         throw data.error;
         // toDO: return False + logs mit fehler schreiben
