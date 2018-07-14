@@ -53,6 +53,7 @@ export class AddEntryComponent implements OnInit {
     this.searchStringChange.emit(this._searchString);
     this.spinnerDisplay = true;
     this.listOfVideosFromYouTube = [];
+    this._listOfVideosFromYouTubeOverload = [];
     if (this._searchString.length) {
       setTimeout(() => {
         if (this._searchString === val) {
@@ -60,7 +61,6 @@ export class AddEntryComponent implements OnInit {
         }
       }, 1000);
     } else {
-      this.listOfVideosFromYouTube = [];
       this.spinnerDisplay = false;
     }
   }
