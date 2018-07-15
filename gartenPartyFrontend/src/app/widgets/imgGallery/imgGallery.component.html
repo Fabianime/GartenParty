@@ -2,7 +2,6 @@
      (click)="toggleSelectedVideo(i)">
   <div class="gallery" [ngClass]="{'selectedVideo' : checkIfVideoSelected(i)}">
     <img [src]="element.thumbnail.url">
-    <!-- <a target="_blank" [href]="element.link"></a> -->
     <div class="title">{{element.title}}</div>
   </div>
 </div>
