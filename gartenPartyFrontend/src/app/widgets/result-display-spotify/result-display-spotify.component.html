@@ -1,0 +1,56 @@
+<section class="content">
+  <div class="content__middle">
+    <div class="artist is-verified">
+      <div class="artist__content">
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="artist-overview">
+            <div class="overview">
+              <div class="overview__albums">
+                <div class="album" *ngFor="let albumData of data;let albumIndex = index"
+                     [ngClass]="{'selectedAlbum' : checkIfAlbumIsSelected(albumIndex)}">
+                  <div class="album__info">
+                    <div class="album__info__art">
+                      <img [src]="albumData.thumbnail.url" [alt]="albumData.name" />
+                    </div>
+                    <div class="album__info__meta">
+                      <div class="album__year">{{albumData.releaseDate}}</div>
+                      <div class="album__name">{{albumData.name}}</div>
+                      <div class="album__actions">
+                        <button class="button-light save" (click)="toggleAlbumToSelected(albumIndex)">Add Album</button>
+                        <button class="button-light save" (click)="toggleTrackView(albumIndex)">Show Tracks</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="album__tracks" class="fadeIn" *ngIf="showTracksOfAlbum.indexOf(albumIndex) >= 0">
+                    <div class="tracks">
+                      <div class="tracks__heading">
+                        <div class="tracks__heading__number">#</div>
+                        <div class="tracks__heading__title">Song</div>
+                        <div class="tracks__heading__length">
+                          <i class="ion-ios-stopwatch-outline"></i>
+                        </div>
+                      </div>
+                      <div class="track" *ngFor="let trackData of albumData['tracks'];let trackIndex = index"
+                           (click)="toggleSelectedTrack(albumIndex, trackIndex)"
+                           [ngClass]="{'selectedTrack' : checkIfTrackIsSelected(albumIndex, trackIndex)}">
+                        <div class="track__number">{{trackIndex + 1}}</div>
+                        <div class="track__added">
+                          <i class="ion-checkmark-round added"></i>
+                        </div>
+                        <div class="track__title">{{trackData.title}}</div>
+                        <div class="track__length">{{trackData.length}}</div>
+                        <div class="track__popularity">
+                          <i class="ion-arrow-graph-up-right"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

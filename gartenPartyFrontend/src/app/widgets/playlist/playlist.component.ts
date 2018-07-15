@@ -54,7 +54,7 @@ export class PlaylistComponent implements OnInit, AfterViewInit {
     // AK'14 ! ➡ Walk of fame. Die Stars gehen – die Fans bleiben. Mit dem Zeugnis in den Händen werden Helden zu Legenden.
     if (this._gartenPartyID === '839') {
       this.playlistImg = 'assets/839.jpg';
-      this.playlistDescription = 'Beim Fehlern meldet euch bei mir(Fabi)';
+      this.playlistDescription = 'Beim Auftreten von Fehlern, meldet euch bei mir (Fabi)';
     } else if (this._gartenPartyID === 'AK14') {
       this.playlistImg = 'assets/ak14.jpg';
       this.playlistDescription = 'AK\'14 ! ➡ Walk of fame. Die Stars gehen – die Fans bleiben.' +
