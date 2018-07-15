@@ -19,13 +19,13 @@ export class ImgGalleryComponent {
   public toggleSelectedVideo(indexOfVideo) {
     const tmp = {
       'name': this.data[indexOfVideo].title,
-      'link': this.data[indexOfVideo].link
+      'url': this.data[indexOfVideo].url
     };
     let isSelected = false;
     let indexOfSelected = -1;
 
     this.selectedVideos.forEach((videoElement, index) => {
-      if (videoElement.link === tmp.link) {
+      if (videoElement.url === tmp.url) {
         isSelected = true;
         indexOfSelected = index;
       }
@@ -41,12 +41,12 @@ export class ImgGalleryComponent {
   public checkIfVideoSelected(indexOfVideo) {
     const tmp = {
       'name': this.data[indexOfVideo].title,
-      'link': this.data[indexOfVideo].link
+      'url': this.data[indexOfVideo].url
     };
     let isSelected = false;
 
     this.selectedVideos.forEach((videoElement) => {
-      if (videoElement.link === tmp.link) {
+      if (videoElement.url === tmp.url) {
         isSelected = true;
       }
     });

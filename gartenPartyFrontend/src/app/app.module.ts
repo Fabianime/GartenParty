@@ -15,10 +15,12 @@ import {ProgressBarComponent} from './widgets/progress-bar/progress-bar.componen
 import {LoginService} from './services/login.service';
 import {PopupComponent} from './widgets/popup/popup.component';
 import {ImgGalleryComponent} from './widgets/imgGallery/imgGallery.component';
-import { HistoryComponent } from './widgets/history/history.component';
+import {HistoryComponent} from './widgets/history/history.component';
 import {YoutubeService} from './services/youtube.service';
 import {PlaylistComponent} from './widgets/playlist/playlist.component';
 import {CheckRoutComponent} from './components/check-rout/check-rout.component';
+import {SpotifyService} from './services/spotify.service';
+import {ResultDisplaySpotifyComponent} from './widgets/result-display-spotify/result-display-spotify.component';
 
 
 @NgModule({
@@ -32,16 +34,22 @@ import {CheckRoutComponent} from './components/check-rout/check-rout.component';
     ImgGalleryComponent,
     HistoryComponent,
     PlaylistComponent,
-    CheckRoutComponent
+    CheckRoutComponent,
+    ResultDisplaySpotifyComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    AppMaterialModule
+    AppMaterialModule,
   ],
-  providers: [MusicService, LoginService, YoutubeService],
+  providers: [
+    MusicService,
+    LoginService,
+    YoutubeService,
+    SpotifyService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

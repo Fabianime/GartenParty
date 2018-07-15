@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 //get
 var getPlayList = require('./routes/get/getPlayList');
 var getStartTrack = require('./routes/get/getStartTrack');
+var getSpotifyToken = require('./routes/get/getSpotifyToken');
 
 //set
 var setPlayList = require('./routes/set/setPlayList');
@@ -61,6 +62,7 @@ app.use(function (req, res, next) {
 //get
 app.use('/getPlayList', getPlayList);
 app.use('/getStartTrack', getStartTrack);
+app.use('/getSpotifyToken', getSpotifyToken);
 
 //set
 app.use('/setPlayList', setPlayList);

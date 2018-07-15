@@ -13,7 +13,6 @@ export class MusicService {
 
   public getPlayList(gartenPartyID: string): Observable<any> {
     return this.http.post(this._endpointUrl + '/getPlayList', {'playlistID': gartenPartyID});
-    // return this.http.get(this._endpointUrl + '/getPlayList/' + gartenPartyID);
   }
 
   public getStartTrack(gartenPartyID: string): Observable<any> {
