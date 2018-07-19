@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-result-display-spotify',
@@ -6,8 +6,10 @@ import {Component, Input, OnInit} from '@angular/core';
   styleUrls: ['./result-display-spotify.component.scss']
 })
 export class ResultDisplaySpotifyComponent implements OnInit {
+  @Output() loadMorAlbumsEmitter = new EventEmitter();
+
   @Input()
-  public data;
+  public listOfElementsToDisplay;
 
   @Input()
   public selectedVideos;
@@ -15,19 +17,26 @@ export class ResultDisplaySpotifyComponent implements OnInit {
   @Input()
   public displayType;
 
+  @Input()
+  public offset;
+
   public showTracksOfAlbum = [];
 
   ngOnInit() {
     if (this.displayType === 'track') {
-      this.showTracksOfAlbum = Array.apply(null, {length: this.data.length}).map(Number.call, Number);
+      this.showTracksOfAlbum = Array.apply(null, {length: this.listOfElementsToDisplay.length}).map(Number.call, Number);
     }
+  }
+
+  loadMoreAlbums(): void {
+    this.loadMorAlbumsEmitter.emit();
   }
 
   public toggleSelectedTrack(indexOfAlbum, indexOfTrack) {
     const tmp = {
-      'name': this.data[indexOfAlbum].tracks[indexOfTrack].title,
-      'url': this.data[indexOfAlbum].tracks[indexOfTrack].url,
-      'length': this.data[indexOfAlbum].tracks[indexOfTrack].length
+      'name': this.listOfElementsToDisplay[indexOfAlbum].tracks[indexOfTrack].title,
+      'url': this.listOfElementsToDisplay[indexOfAlbum].tracks[indexOfTrack].url,
+      'length': this.listOfElementsToDisplay[indexOfAlbum].tracks[indexOfTrack].length
     };
     let isSelected = false;
     let indexOfSelected = -1;
@@ -48,9 +57,9 @@ export class ResultDisplaySpotifyComponent implements OnInit {
 
   public checkIfTrackIsSelected(indexOfAlbum, indexOfTrack) {
     const tmp = {
-      'name': this.data[indexOfAlbum].tracks[indexOfTrack].title,
-      'url': this.data[indexOfAlbum].tracks[indexOfTrack].url,
-      'length': this.data[indexOfAlbum].tracks[indexOfTrack].length
+      'name': this.listOfElementsToDisplay[indexOfAlbum].tracks[indexOfTrack].title,
+      'url': this.listOfElementsToDisplay[indexOfAlbum].tracks[indexOfTrack].url,
+      'length': this.listOfElementsToDisplay[indexOfAlbum].tracks[indexOfTrack].length
     };
     let isSelected = false;
 
@@ -64,7 +73,7 @@ export class ResultDisplaySpotifyComponent implements OnInit {
 
   public toggleAlbumToSelected(albumIndex) {
     const isAlbumSelected = this.checkIfAlbumIsSelected(albumIndex);
-    this.data[albumIndex].tracks.forEach((trackData, trackIndex) => {
+    this.listOfElementsToDisplay[albumIndex].tracks.forEach((trackData, trackIndex) => {
       if (
         (isAlbumSelected && this.checkIfTrackIsSelected(albumIndex, trackIndex)) ||
         (!isAlbumSelected && !this.checkIfTrackIsSelected(albumIndex, trackIndex))
@@ -85,7 +94,7 @@ export class ResultDisplaySpotifyComponent implements OnInit {
 
   public checkIfAlbumIsSelected(albumIndex) {
     let isSelected = true;
-    this.data[albumIndex].tracks.forEach((trackData, trackIndex) => {
+    this.listOfElementsToDisplay[albumIndex].tracks.forEach((trackData, trackIndex) => {
       if (!this.checkIfTrackIsSelected(albumIndex, trackIndex)) {
         isSelected = false;
       }

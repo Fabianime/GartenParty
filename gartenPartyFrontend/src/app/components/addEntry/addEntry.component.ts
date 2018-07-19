@@ -1,4 +1,4 @@
-import {Component, OnInit, EventEmitter, Input, Output} from '@angular/core';
+import {Component, OnInit, EventEmitter, Input, Output, ElementRef, ViewChild} from '@angular/core';
 import {LoginService} from '../../services/login.service';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
@@ -6,12 +6,14 @@ import {MusicService} from '../../services/music.service';
 import {YoutubeService} from '../../services/youtube.service';
 import {SpotifyService} from '../../services/spotify.service';
 
+
 @Component({
   selector: 'app-add-entry',
   templateUrl: './addEntry.component.html',
   styleUrls: ['./addEntry.component.scss']
 })
 export class AddEntryComponent implements OnInit {
+  @ViewChild('hideKeyboard') hideKeyboard: ElementRef;
 
   constructor(private loginService: LoginService,
               private http: HttpClient,
@@ -27,23 +29,21 @@ export class AddEntryComponent implements OnInit {
   public popupFooter = 'Footer';
 
   public showPopup = false;
-  public youtubeIsSelected = false;
-  public spotifyIsSelected = false;
   public showLogin = false;
   public showAddEntry = false;
   public selectedVideos = [];
-  public listOfVideosFromYouTube = [];
-  public listOfVideosFromSpotify = [];
+  public listOfVideosFromAPI = [];
   public showResults = false;
   public spinnerDisplay = false;
-  public spotifySearchFor = '';
+  public spotifySearchType = 'artist';
+  public searchEngine: string;
+  public spotifyOffset: number;
+  public artistID: string;
 
   private _searchString;
   private _playlistID = this.loginService.getGartenPartyID();
   private _playlist = [];
-  private _listOfVideosFromYouTubeOverload = [];
   private _oldSelectedVideos = [];
-  private _searchEngine: string;
 
   @Output() searchStringChange = new EventEmitter();
 
@@ -56,106 +56,30 @@ export class AddEntryComponent implements OnInit {
     this._searchString = val;
     this.searchStringChange.emit(this._searchString);
     this.spinnerDisplay = true;
-    this.listOfVideosFromYouTube = [];
-    this._listOfVideosFromYouTubeOverload = [];
+    this.listOfVideosFromAPI = [];
     if (this._searchString.length) {
       setTimeout(() => {
         if (this._searchString === val) {
-          if (this._searchEngine === 'YouTube') {
-            this._searchInYoutube();
-          } else if (this._searchEngine === 'Spotify') {
-            this._searchInSpotify();
-          }
+          this._searchInEngine();
         }
-      }, 1000);
+      }, 800);
     } else {
       this.spinnerDisplay = false;
     }
   }
 
   ngOnInit() {
-    this.checkLogin();
+    this._checkLogin();
     this._getPlayList();
-    this.spotifyService.initialiseToken().subscribe();
-  }
-
-  private _getPlayList() {
-    this.musicService.getPlayList(this._playlistID).subscribe((data) => {
-      const strData = JSON.parse(data.response);
-      if (strData.playlist === undefined) {
-        this._playlist = [];
-      } else {
-        this._playlist = strData.playlist;
-      }
-    });
-  }
-
-  private checkLogin() {
-    // todo: auslagern nach login service
-    this.loginService.checkGartenPartyID().subscribe((data) => {
-      if (data.status === 200) {
-        this.showLogin = !data.response;
-        this.showAddEntry = data.response;
-      } else {
-        throw data.error;
-        // toDO: return False + logs mit fehler schreiben
-      }
-    });
-  }
-
-  private addTracksToPlayList(listOfTracksToAdd) {
-    const playlistID = this.loginService.getGartenPartyID();
-    this.musicService.setPlayList(playlistID, listOfTracksToAdd).subscribe((responseData) => {
-      if (responseData.status === 200) {
-        this.showPopup = true;
-        this.popupHeader = 'You added: ' + this.selectedVideos.length + ' videos';
-        this.popupBody = '';
-        this.popupBodyData = [];
-
-        this.selectedVideos.forEach((selectedVideoData, index) => {
-          this.popupBody += '<p style="color:black">' + selectedVideoData.name +
-            '<span class="deleteVideo" (click)="this.closePopup(listPoint)"> &#10006;</span></p>';
-          this.popupBodyData.push({'value': selectedVideoData.name, 'id': index});
-        });
-        this.popupFooter = 'Footer';
-
-        this._oldSelectedVideos = this.selectedVideos;
-        this.selectedVideos = [];
-        this.listOfVideosFromYouTube = [];
-        this._searchString = '';
-        this._getPlayList();
-      } else {
-        throw responseData.error;
-        // toDO: return False + logs mit fehler schreiben
-      }
-    });
-  }
-
-  public addSelectedToList() {
-    // hier noch besseres selected Videos array erstelen
-    const listOfTracksToAdd = [];
-    this.selectedVideos.forEach((videoData) => {
-      if (videoData.url.indexOf('https://www.youtube.com/watch?v=') >= 0) {
-        const videoId = videoData.url.replace('https://www.youtube.com/watch?v=', '');
-        this.youtubeService.getContentDetailsOfTrack(videoId).subscribe((data) => {
-          const length = this._convertDuration(data.items[0].contentDetails.duration);
-          const tmp = {
-            'name': videoData.name,
-            'url': videoData.url,
-            'length': length
-          };
-          listOfTracksToAdd.push(tmp);
-        });
-      } else {
-        listOfTracksToAdd.push(videoData);
-      }
-    });
-    // TODO: muss noch zu bulk upload oder so
-    Observable.interval(200)
-      .takeWhile(() => listOfTracksToAdd.length === this.selectedVideos.length)
-      .subscribe(() => {
-        this.addTracksToPlayList(listOfTracksToAdd);
-      });
+    this.spotifyService.initialiseToken()
+      .subscribe(
+        () => {
+        },
+        () => {
+        },
+        () => {
+        }
+      );
   }
 
   private _convertDuration(duration): string {
@@ -187,91 +111,261 @@ export class AddEntryComponent implements OnInit {
     }
   }
 
+  private _getPlayList() {
+    this.musicService.getPlayList(this._playlistID)
+      .subscribe((data) => {
+          const strData = JSON.parse(data.response);
+          if (strData.playlist === undefined) {
+            this._playlist = [];
+          } else {
+            this._playlist = strData.playlist;
+          }
+        },
+        () => {
+        },
+        () => {
+        }
+      );
+  }
+
+  private _checkLogin() {
+    // todo: auslagern nach login service
+    this.loginService.checkGartenPartyID()
+      .subscribe((data) => {
+          if (data.status === 200) {
+            this.showLogin = !data.response;
+            this.showAddEntry = data.response;
+          } else {
+            throw data.error;
+            // toDO: return False + logs mit fehler schreiben
+          }
+        },
+        () => {
+        },
+        () => {
+        }
+      );
+  }
+
+  private _checkShowResult() {
+    switch (this.searchEngine) {
+      case 'YouTube':
+        return !this.showResults;
+      case 'Spotify':
+        return this.spotifySearchType ? !this.showResults : this.spotifySearchType.length > 0;
+      default:
+        return false;
+    }
+  }
+
+  private _searchInEngine() {
+    if (this._searchString) {
+      this.hideKeyboard.nativeElement.focus();
+      this.hideKeyboard.nativeElement.blur();
+      switch (this.searchEngine) {
+        case 'YouTube':
+          this._searchInYoutube();
+          break;
+        case 'Spotify':
+          if (this.spotifySearchType) {
+            this._searchInSpotify();
+          }
+          break;
+      }
+    }
+  }
+
+  public loadSearchEngine(searchEngine) {
+    if (this.searchEngine !== searchEngine) {
+      this.showResults = false;
+      this.searchEngine = searchEngine;
+    } else {
+      this.searchEngine = '';
+    }
+    this.showResults = this._checkShowResult();
+    this.listOfVideosFromAPI = [];
+    this._searchInEngine();
+  }
+
+  private _searchInYoutube(nextPageToken?: string) {
+    this.spinnerDisplay = true;
+    this.youtubeService.getSearchResult(this._searchString, nextPageToken)
+      .subscribe((data) => {
+          this.listOfVideosFromAPI = this.listOfVideosFromAPI.concat(
+            this.youtubeService.processSearchResult(data, this._playlist, this.listOfVideosFromAPI.length));
+          if (this.listOfVideosFromAPI.length < 20) {
+            this._searchInYoutube(data.nextPageToken);
+          } else {
+            this.spinnerDisplay = false;
+          }
+        },
+        () => {
+        },
+        () => {
+        })
+    ;
+  }
+
+  private _searchInSpotify() {
+    this.spinnerDisplay = true;
+    this.spotifyService.getSearchResult(this._searchString, this.spotifySearchType)
+      .subscribe((data) => {
+          switch (this.spotifySearchType) {
+            case 'album':
+              this.spotifyService.processAlbumSearchResult(data, this._playlist)
+                .subscribe((processedData) => {
+                    this.listOfVideosFromAPI = processedData;
+                  },
+                  (error) => {
+                    console.log(error);
+                  },
+                  () => {
+                    this.spinnerDisplay = false;
+                  });
+              break;
+            case 'artist':
+              this.spotifyService.processArtistSearchResult(data)
+                .subscribe((processedData) => {
+                    this.listOfVideosFromAPI = processedData;
+                    this.spinnerDisplay = false;
+                  },
+                  (error) => {
+                    console.log(error);
+                  },
+                  () => {
+                    this.spinnerDisplay = false;
+                  });
+              break;
+            case 'track':
+              this.listOfVideosFromAPI = this.spotifyService.processTrackSearchResult(data, this._playlist);
+              this.spinnerDisplay = false;
+              break;
+            default:
+              break;
+          }
+        },
+        () => {
+        },
+        () => {
+        }
+      );
+  }
+
+  public onSpotifySearchTypeChange(searchType) {
+    this.listOfVideosFromAPI = [];
+    this.artistID = '';
+    this.spotifySearchType = searchType;
+    this.showResults = this.spotifySearchType.length > 0;
+    this._searchInEngine();
+  }
+
+  public getAlbumsWithTracksFromArtist(artistID: string, offset = 0) {
+    this.artistID = artistID;
+    this.spotifyOffset = offset;
+    this.spinnerDisplay = true;
+    this.spotifyService.getAlbumsWithTracksFromArtist(artistID, offset, this._playlist)
+      .subscribe((processedData) => {
+          this.listOfVideosFromAPI = offset > 0 ? this.listOfVideosFromAPI.concat(processedData) : processedData;
+          console.log(this.listOfVideosFromAPI);
+          this.spotifySearchType = 'album';
+        },
+        () => {
+        },
+        () => {
+          this.spinnerDisplay = false;
+        });
+  }
+
+  // ToDO: improve me?
+  private addTracksToPlayList(listOfTracksToAdd) {
+    const playlistID = this.loginService.getGartenPartyID();
+    this.musicService.setPlayList(playlistID, listOfTracksToAdd)
+      .subscribe((responseData) => {
+          if (responseData.status === 200) {
+            this.popupHeader = 'You added: ' + listOfTracksToAdd.length + ' videos';
+            this.popupBody = '';
+            this.popupBodyData = [];
+            listOfTracksToAdd.forEach((selectedVideoData, index) => {
+              this.popupBody += '<p style="color:black">' + selectedVideoData.name +
+                '<span class="deleteVideo" (click)="this.closePopup(listPoint)"> &#10006;</span></p>';
+              this.popupBodyData.push({'value': selectedVideoData.name, 'id': index});
+            });
+            this.popupFooter = 'Footer';
+            this.showPopup = true;
+
+            this._oldSelectedVideos = this.selectedVideos;
+            this.selectedVideos = [];
+            this.listOfVideosFromAPI = [];
+            this._searchString = '';
+            this.loadSearchEngine('');
+            this._getPlayList();
+          } else {
+            throw responseData.error;
+            // toDO: return False + logs mit fehler schreiben
+          }
+        },
+        () => {
+        },
+        () => {
+        });
+  }
+
+  // ToDO: improve me?
+  public addSelectedToList() {
+    // hier noch besseres selected Videos array erstelen
+    const listOfTracksToAdd = [];
+    this.selectedVideos.forEach((videoData) => {
+      if (videoData.url.indexOf('https://www.youtube.com/watch?v=') >= 0) {
+        const videoId = videoData.url.replace('https://www.youtube.com/watch?v=', '');
+        this.youtubeService.getContentDetailsOfTrack(videoId)
+          .subscribe((data) => {
+              const length = this._convertDuration(data.items[0].contentDetails.duration);
+              const tmp = {
+                'name': videoData.name,
+                'url': videoData.url,
+                'length': length
+              };
+              listOfTracksToAdd.push(tmp);
+            },
+            () => {
+            },
+            () => {
+            });
+      } else {
+        listOfTracksToAdd.push(videoData);
+      }
+    });
+    // TODO: muss noch zu bulk upload oder so
+    const waitingForDataSubscription = Observable.interval(200)
+      .takeWhile(() => listOfTracksToAdd.length === this.selectedVideos.length)
+      .subscribe(() => {
+          this.addTracksToPlayList(listOfTracksToAdd);
+          waitingForDataSubscription.unsubscribe();
+        },
+        () => {
+        },
+        () => {
+        });
+  }
+
+  // ToDO: improve me? Bulk?
   public deleteTrack(val: number) {
     this.popupBodyData.forEach((videoData, index) => {
       if (videoData.id === val) {
         this.popupBodyData.splice(index, 1);
       }
     });
-    this.musicService.deleteTrack(this._playlistID, this._oldSelectedVideos[val].url).subscribe((data) => {
-      if (data.status === 200) {
-        // ToDo: do something maybe?
-      } else {
-        // ToDo: log error
-      }
-    });
-  }
-
-  // SearchEngine Specific Functions
-
-  public loadYoutube() {
-    if (this._searchEngine === 'YouTube') {
-      this.showResults = !this.showResults;
-    } else {
-      this.showResults = true;
-    }
-    this._searchEngine = 'YouTube';
-    this.youtubeIsSelected = !this.youtubeIsSelected;
-    this.spotifyIsSelected = false;
-    this.listOfVideosFromYouTube = [];
-    this.listOfVideosFromSpotify = [];
-    if (this._searchString !== undefined && this._searchString !== '') {
-      this._searchInYoutube();
-    }
-  }
-
-  private _searchInYoutube(nextPageToken?: string) {
-    this.spinnerDisplay = true;
-    this.youtubeService.getSearchResult(this._searchString, nextPageToken).subscribe((data) => {
-      const processedSearchData = this.youtubeService.processSearchResult(data, this._playlist, this.listOfVideosFromYouTube.length);
-      this.listOfVideosFromYouTube = this.listOfVideosFromYouTube.concat(processedSearchData);
-
-      if (this.listOfVideosFromYouTube.length < 20) {
-        this._searchInYoutube(data.nextPageToken);
-      } else {
-        this.spinnerDisplay = false;
-      }
-    });
-  }
-
-  public loadSpotify() {
-    if (this._searchEngine === 'Spotify' && this.spotifySearchFor.length) {
-      this.showResults = !this.showResults;
-    } else {
-      this._toggleSpotifySearchBar();
-    }
-    this.spotifyIsSelected = !this.spotifyIsSelected;
-    this._searchEngine = 'Spotify';
-    this.youtubeIsSelected = false;
-    this.listOfVideosFromYouTube = [];
-    this.spotifyService.initialiseToken().subscribe();
-    this._searchInSpotify();
-  }
-
-  public searchForChangeSpotify() {
-    this._toggleSpotifySearchBar();
-    this._searchInSpotify();
-  }
-
-  private _toggleSpotifySearchBar() {
-    this.showResults = this.spotifySearchFor.length > 0;
-  }
-
-  private _searchInSpotify() {
-    if (this._searchString !== undefined && this._searchString !== '' && this.spotifySearchFor.length > 0) {
-      this.spinnerDisplay = true;
-      this.listOfVideosFromSpotify = [];
-      this.spotifyService.getSearchResult(this._searchString, this.spotifySearchFor).subscribe((data) => {
-        if (this.spotifySearchFor === 'track') {
-          this.listOfVideosFromSpotify = this.spotifyService.processTrackSearchResult(data, this._playlist);
-          this.spinnerDisplay = false;
-        } else if (this.spotifySearchFor === 'album') {
-          this.spotifyService.processAlbumSearchResult(data, this._playlist).subscribe((processedData) => {
-            this.listOfVideosFromSpotify = processedData;
-            this.spinnerDisplay = false;
-          });
-        }
-      });
-    }
+    this.musicService.deleteTrack(this._playlistID, this._oldSelectedVideos[val].url)
+      .subscribe((data) => {
+          if (data.status === 200) {
+            // ToDo: do something maybe?
+          } else {
+            // ToDo: log error
+          }
+        },
+        () => {
+        },
+        () => {
+        });
   }
 }
