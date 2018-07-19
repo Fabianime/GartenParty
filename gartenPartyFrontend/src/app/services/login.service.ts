@@ -27,7 +27,7 @@ export class LoginService {
   }
 
   public checkGartenPartyID(): Observable<any> {
-    return this.http.post(this._endpointUrl + '/checkPlaylist', {'playlistID' : this.getGartenPartyID()});
+    return this.http.post(this._endpointUrl + '/checkPlaylist', {'playlistID': this.getGartenPartyID()});
   }
 
   public getGartenPartyID() {

@@ -1,4 +1,4 @@
-  @import '_vars';
+@import '_vars';
 
 .nav {
   list-style-type: none;
@@ -31,16 +31,16 @@
   background-color: $standard;
 }
 
-body{
+body {
   background: #0a1a24;
 }
 
 .logout {
-    background-color: #fad100;
-    float: right !important;
+  background-color: #fad100;
+  float: right !important;
 }
 
-  .partyInfo {
+.partyInfo {
   display: inline-block;
   color: #fafafa;
   float: right !important;

@@ -6,18 +6,20 @@
           <div role="tabpanel" class="tab-pane active" id="artist-overview">
             <div class="overview">
               <div class="overview__albums">
-                <div class="album" *ngFor="let albumData of data;let albumIndex = index"
+                <div class="album" *ngFor="let albumData of listOfElementsToDisplay;let albumIndex = index"
                      [ngClass]="{'selectedAlbum' : checkIfAlbumIsSelected(albumIndex)}">
                   <div class="album__info">
                     <div class="album__info__art">
-                      <img [src]="albumData.thumbnail.url" [alt]="albumData.name" />
+                      <img [src]="albumData.thumbnail.url" [alt]="albumData.name"/>
                     </div>
                     <div class="album__info__meta">
                       <div class="album__year">{{albumData.releaseDate}}</div>
                       <div class="album__name">{{albumData.name}}</div>
                       <div class="album__actions">
                         <button class="button-light save" (click)="toggleAlbumToSelected(albumIndex)">Add Album</button>
-                        <button class="button-light save" (click)="toggleTrackView(albumIndex)">Show Tracks</button>
+                        <button class="button-light save" (click)="toggleTrackView(albumIndex)">Show Tracks
+                          ({{albumData.tracks.length}})
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -46,6 +48,8 @@
                     </div>
                   </div>
                 </div>
+                <div class="album loadMore" (click)="loadMoreAlbums()"
+                     *ngIf="displayType !== 'artist' && displayType !== 'track'">...</div>
               </div>
             </div>
           </div>

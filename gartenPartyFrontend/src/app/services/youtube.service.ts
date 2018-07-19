@@ -38,21 +38,12 @@ export class YoutubeService {
         'description': element.snippet.description,
         'url': 'https://www.youtube.com/watch?v=' + element.id.videoId
       };
-      if (!this._checkIfVideoAlreadyInPlaylist(currentPlaylist, tmp.url) && processedData.length + lengthOfCurrentList <= 25) {
+      if (currentPlaylist.filter((trackData) => trackData.url === tmp.url)[0] === undefined &&
+        processedData.length + lengthOfCurrentList <= 25) {
         processedData.push(tmp);
       }
     });
     return processedData;
-  }
-
-  private _checkIfVideoAlreadyInPlaylist(playlist, videoUrl) {
-    let videoInPlaylist = false;
-    playlist.forEach((playlistData) => {
-      if (playlistData.url === videoUrl) {
-        videoInPlaylist = true;
-      }
-    });
-    return videoInPlaylist;
   }
 
 }

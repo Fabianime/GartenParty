@@ -1,14 +1,14 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'app-img-gallery',
-  templateUrl: './imgGallery.component.html',
-  styleUrls: ['./imgGallery.component.scss']
+  selector: 'app-result-display-youtube',
+  templateUrl: './result-display-youtube.component.html',
+  styleUrls: ['./result-display-youtube.component.scss']
 })
-export class ImgGalleryComponent {
+export class ResultDisplayYoutubeComponent {
 
   @Input()
-  public data;
+  public listOfElementsToDisplay;
 
   @Input()
   public selectedVideos;
@@ -18,8 +18,8 @@ export class ImgGalleryComponent {
 
   public toggleSelectedVideo(indexOfVideo) {
     const tmp = {
-      'name': this.data[indexOfVideo].title,
-      'url': this.data[indexOfVideo].url
+      'name': this.listOfElementsToDisplay[indexOfVideo].title,
+      'url': this.listOfElementsToDisplay[indexOfVideo].url
     };
     let isSelected = false;
     let indexOfSelected = -1;
@@ -40,8 +40,8 @@ export class ImgGalleryComponent {
 
   public checkIfVideoSelected(indexOfVideo) {
     const tmp = {
-      'name': this.data[indexOfVideo].title,
-      'url': this.data[indexOfVideo].url
+      'name': this.listOfElementsToDisplay[indexOfVideo].title,
+      'url': this.listOfElementsToDisplay[indexOfVideo].url
     };
     let isSelected = false;
 

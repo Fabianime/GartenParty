@@ -10,7 +10,7 @@
     background: url(/../assets/retroArt.jpg) center/cover;
     height: 80%;
   }
-  @media(max-width: 550px) {
+  @media(max-width: 600px) {
     background: url(/../assets/space_mobile.jpg) center/cover;
     height: 100%;
     opacity: .5;
@@ -24,7 +24,7 @@
   + section {
     margin-top: 20vmin;
     background: transparent;
-    @media(max-width: 550px) {
+    @media(max-width: 600px) {
       margin-top: 30vmin;
     }
   }
@@ -38,7 +38,7 @@ section {
   @media(max-width: 800px) {
     margin: 100px 36px 36px 36px;
   }
-  @media(max-width: 550px) {
+  @media(max-width: 600px) {
     margin: 100px 20px 20px 20px;
     padding: 20px 0;
   }
@@ -48,23 +48,22 @@ h1 {
   font-size: 50px;
   font-weight: 300;
   word-wrap: break-word;
-  @media(max-width: 550px) {
+  @media(max-width: 600px) {
     font-size: 40px;
     font-weight: 300;
   }
 }
 
 .display-elements {
-  width: 35%;
+  width: 67%;
   display: block;
   padding: 12px 20px;
   margin: 5px 0;
   border: none;
   border-radius: 4px;
-  @media(max-width: 1280px) {
-    width: 70%;
-  }
-  @media(max-width: 550px) {
+  background-color: #282828;
+  color: $white;
+  @media(max-width: 880px) {
     width: 100%;
   }
 }
@@ -72,6 +71,10 @@ h1 {
 input[type=text], select {
   display: inline-block;
   box-sizing: border-box;
+  border: 3px solid #181818;
+  @media (max-width: 600px) {
+    border: none;
+  }
 }
 
 input[type=button] {
