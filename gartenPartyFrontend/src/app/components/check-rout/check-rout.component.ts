@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {LoginService} from '../../services/login.service';
 import {Router} from '@angular/router';
 
@@ -10,6 +10,7 @@ import {Router} from '@angular/router';
 
 export class CheckRoutComponent {
   public show404 = false;
+
   constructor(private loginService: LoginService,
               private router: Router) {
     router.events.subscribe((url: any) => {

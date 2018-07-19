@@ -9,9 +9,9 @@
     </div>
     <div class="modal-body">
       <ng-container *ngIf="checkGenerateBody">
-        <p *ngFor="let data of generateBodyData">
-          {{ data.value }}
-          <span class="specialElement" (click)="bodyElementWasClicked(data.id)">&times;</span>
+        <p *ngFor="let listOfElementsToDisplay of generateBodyData">
+          {{ listOfElementsToDisplay.value }}
+          <span class="specialElement" (click)="bodyElementWasClicked(listOfElementsToDisplay.id)">&times;</span>
         </p>
       </ng-container>
     </div>

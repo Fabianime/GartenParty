@@ -1,0 +1,9 @@
+<div class="responsive" *ngFor="let element of listOfElementsToDisplay;let i = index" [attr.data-index]="i"
+     (click)="toggleSelectedVideo(i)">
+  <div class="gallery" [ngClass]="{'selectedVideo' : checkIfVideoSelected(i)}">
+    <img [src]="element.thumbnail.url">
+    <div class="title">{{element.title}}</div>
+  </div>
+</div>
+
+<div class="clearfix"></div>
