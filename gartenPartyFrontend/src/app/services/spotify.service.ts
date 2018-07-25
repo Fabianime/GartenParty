@@ -80,17 +80,19 @@ export class SpotifyService {
 
   private _getAlbumsFromArtist(artistID: string, offset): Observable<any> {
     const header = {'headers': {'Authorization': 'Bearer ' + this._authToken}};
-    return this.http.get(this._endpointUrlSpotify + 'artists/' + artistID + '/albums?limit=5' + '&offset=' + offset
-      + '&include_groups=album', header);
+    return this.http.get(this._endpointUrlSpotify + 'artists/' + artistID + '/albums?limit=20&market=DE' + '&offset=' + offset, header);
   }
 
-  private _prepTrackFromElement(element, currentPlaylist) {
-    const url = element.href;
+  private _prepTrackFromElement(element, currentPlaylist, originatedFromArtist?) {
+    let url = element.href;
+    if (originatedFromArtist) {
+      url = element.external_urls.spotify;
+    }
     if (!this._checkIfVideoAlreadyInPlaylist(currentPlaylist, url) && element.duration_ms >= 60000) {
       const trackTitle = element.name;
       return {
         'title': (trackTitle.length > 55 ? trackTitle.substring(0, 52) + '...' : trackTitle),
-        'url': element.href,
+        'url': url,
         'length': this._convertDuration(element.duration_ms)
       };
     }
@@ -131,9 +133,9 @@ export class SpotifyService {
     return processedData;
   }
 
-  public processAlbumSearchResult(searchResult, currentPlaylist): Observable<Array<any>> {
+  public processAlbumSearchResult(searchResult, currentPlaylist, originatedFromArtist?): Observable<Array<any>> {
     return new Observable((observer) => {
-      const processedData = [];
+      let processedData = [];
       let checkSum = searchResult.albums.items.length;
       searchResult.albums.items.forEach((element) => {
         const albumData = {
@@ -145,9 +147,9 @@ export class SpotifyService {
         };
         this._getTracksForAlbum(element.id).subscribe((data) => {
           data.items.forEach((trackData) => {
-            const formatedTrackData = this._prepTrackFromElement(trackData, currentPlaylist);
-            if (formatedTrackData !== undefined) {
-              albumData.tracks.push(formatedTrackData);
+            const formattedTrackData = this._prepTrackFromElement(trackData, currentPlaylist, originatedFromArtist);
+            if (formattedTrackData !== undefined) {
+              albumData.tracks.push(formattedTrackData);
             }
           });
           if (albumData.tracks.length > 0) {
@@ -155,21 +157,30 @@ export class SpotifyService {
           }
           checkSum--;
           if (checkSum === 0) {
+            processedData.sort((a, b) => {
+              return a.releaseDate < b.releaseDate ? 1 : -1;
+            });
+            processedData = this._simplifyArtistAlbumsWithTracks(processedData);
             done();
           }
         });
       });
 
       if (!searchResult.albums.items.length) {
+        processedData = this._simplifyArtistAlbumsWithTracks(processedData);
         done();
       }
 
       function done() {
-        console.log('DONE');
         observer.next(processedData);
         observer.complete();
       }
     });
+  }
+
+  private _simplifyArtistAlbumsWithTracks(processedData) {
+    const listOfNames = this._getUniqueAndShortNamesFromAlbumList(processedData);
+    return this._getUniqueTracksForAlbum(listOfNames, processedData);
   }
 
   public processArtistSearchResult(searchResult): Observable<Array<any>> {
@@ -192,9 +203,8 @@ export class SpotifyService {
   public getAlbumsWithTracksFromArtist(artistID, offset, currentPlaylist): Observable<Array<any>> {
     return new Observable((observer) => {
       this._getAlbumsFromArtist(artistID, offset).subscribe((resultData) => {
-          this.processAlbumSearchResult({'albums': resultData}, currentPlaylist).subscribe((processedData) => {
+          this.processAlbumSearchResult({'albums': resultData}, currentPlaylist, true).subscribe((processedData) => {
               observer.next(processedData);
-              console.log(processedData);
             },
             (error) => {
               observer.next(error);
@@ -208,5 +218,63 @@ export class SpotifyService {
           observer.complete();
         });
     });
+  }
+
+  private _getUniqueTracksFromMultipleAlbums(multipleAlbumData, newAlbumName, indexesOfAlbums) {
+    let uniqueTracks = [];
+    const returnObject = multipleAlbumData[indexesOfAlbums[0]];
+    indexesOfAlbums.forEach(index => {
+      uniqueTracks = uniqueTracks.concat(
+        multipleAlbumData[index].tracks.filter(trackNameToCheck => {
+          return uniqueTracks.filter(trackNameAlreadyExisting => {
+            return trackNameAlreadyExisting.name === trackNameToCheck.name;
+          }).length === 0;
+        })
+      );
+    });
+    returnObject.name = newAlbumName;
+    returnObject.tracks = uniqueTracks;
+    return returnObject;
+  }
+
+  private _getUniqueAndShortNamesFromAlbumList(albumList): Array<string> {
+    const listOfNames = [];
+    albumList.forEach((albumData) => {
+      let checkSpecialChar = false;
+      listOfNames.push(
+        albumData.name
+          .replace(':', ' :')
+          .split(' ')
+          .filter((albumNamePart) => {
+            checkSpecialChar = /\W/.test(albumNamePart) || checkSpecialChar;
+            return !checkSpecialChar;
+          }).join(' ')
+      );
+    });
+    return listOfNames;
+  }
+
+  private _getUniqueTracksForAlbum(listOfNames, listOfAlbums): Array<any> {
+    const returnData = [];
+    const listOfSameAlbumNames = [];
+    listOfNames.forEach((shortAlbumName) => {
+      const foundIndexes = [];
+      if (listOfSameAlbumNames.indexOf(shortAlbumName) === -1) {
+        listOfNames.forEach((nameToCheck, index) => {
+          if (nameToCheck === shortAlbumName) {
+            foundIndexes.push(index);
+          }
+        });
+        if (foundIndexes.length > 1) {
+          returnData.push(this._getUniqueTracksFromMultipleAlbums(listOfAlbums, shortAlbumName, foundIndexes));
+        } else {
+          listOfAlbums[foundIndexes[0]].name = shortAlbumName;
+          returnData.push(listOfAlbums[foundIndexes[0]]);
+        }
+        listOfSameAlbumNames.push(shortAlbumName);
+      }
+    });
+    console.log(returnData);
+    return returnData;
   }
 }
