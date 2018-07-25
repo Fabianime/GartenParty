@@ -266,7 +266,6 @@ export class AddEntryComponent implements OnInit {
     this.spotifyService.getAlbumsWithTracksFromArtist(artistID, offset, this._playlist)
       .subscribe((processedData) => {
           this.listOfVideosFromAPI = offset > 0 ? this.listOfVideosFromAPI.concat(processedData) : processedData;
-          console.log(this.listOfVideosFromAPI);
           this.spotifySearchType = 'album';
         },
         () => {
